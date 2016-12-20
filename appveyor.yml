@@ -1,0 +1,9 @@
+version: 1.0.{build}
+before_build:
+- cmd: >-
+    cd Maybe
+
+    nuget restore
+build:
+  project: Maybe/Maybe.sln
+  verbosity: minimal
