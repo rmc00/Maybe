@@ -16,6 +16,7 @@ namespace Maybe
         /// Creates a new bloom filter collection
         /// </summary>
         /// <param name="bitArraySize">The size of the bloom filter's internal bit array. Can be configured for different tradeoffs of memory usage vs false positive rates</param>
+        /// <param name="numHashes">Number of hashes to execute on each input item</param>
         public BloomFilter(int bitArraySize, int numHashes)
         {
             _collectionState = new BitArray(bitArraySize);
@@ -23,11 +24,17 @@ namespace Maybe
             _secondaryAlgo = HashAlgorithm.Create();
         }
 
-        public void Add(T item)
-        {
-            DoHashAction(item, hash => _collectionState[hash] = true);
-        }
+        /// <summary>
+        /// Adds an item to the bloom filter
+        /// </summary>
+        /// <param name="item">The item which should be added</param>
+        public void Add(T item) => DoHashAction(item, hash => _collectionState[hash] = true);
 
+        /// <summary>
+        /// Checks if this bloom filter currently contains an item
+        /// </summary>
+        /// <param name="item">The item for which to search in the bloom filter</param>
+        /// <returns>False if the item is NOT in the bloom filter. True if the item MIGHT be in the bloom filter.</returns>
         public bool Contains(T item)
         {
             var containsItem = true;
@@ -35,7 +42,19 @@ namespace Maybe
             return containsItem;
         }
 
-        private byte[] ConvertToByteArray(object item)
+        private void DoHashAction(T item, Action<int> hashAction)
+        {
+            var primaryHash = item.GetHashCode();
+            var secondaryHash = BitConverter.ToInt32(_secondaryAlgo.ComputeHash(ConvertToByteArray(item)), 0);
+
+            for (var i = 0; i < _hashCount; i++)
+            {
+                var resultingHash = Math.Abs((primaryHash + (i * secondaryHash)) % _collectionState.Length);
+                hashAction(resultingHash);
+            }
+        }
+
+        private static byte[] ConvertToByteArray(object item)
         {
             if (item == null) return null;
 
@@ -44,18 +63,6 @@ namespace Maybe
             {
                 binaryFormatter.Serialize(memoryStream, item);
                 return memoryStream.ToArray();
-            }
-        }
-
-        private void DoHashAction(T item, Action<int> hashAction)
-        {
-            var primaryHash = item.GetHashCode();
-            var secondaryHash = BitConverter.ToInt32(_secondaryAlgo.ComputeHash(ConvertToByteArray(item)), 0);
-
-            for (int i = 0; i < _hashCount; i++)
-            {
-                int resultingHash = Math.Abs((primaryHash + (i * secondaryHash)) % _collectionState.Length);
-                hashAction(resultingHash);
             }
         }
     }
