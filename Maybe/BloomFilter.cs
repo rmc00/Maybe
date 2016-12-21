@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using Maybe.Utilities;
+using Newtonsoft.Json;
 
 namespace Maybe
 {
@@ -68,16 +69,6 @@ namespace Maybe
             }
         }
 
-        private static byte[] ConvertToByteArray(object item)
-        {
-            if (item == null) return null;
-
-            var binaryFormatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                binaryFormatter.Serialize(memoryStream, item);
-                return memoryStream.ToArray();
-            }
-        }
+        private static byte[] ConvertToByteArray(object item) => item == null ? null : Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(item));
     }
 }
