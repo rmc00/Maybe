@@ -10,9 +10,5 @@
   },
   "frameworks": {
     "netstandard1.5": {}
-  },
-  "packOptions": {
-    "licenseUrl": "https://github.com/rmc00/Maybe/blob/master/LICENSE",
-    "projectUrl": "https://github.com/rmc00/Maybe"
   }
 }

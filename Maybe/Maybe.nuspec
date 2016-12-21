@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>Maybe.NET</id>
+    <version>1.0.0.0</version>
+    <title>Maybe.NET</title>
+    <authors>Ryan McCoy</authors>
+    <owners>Ryan McCoy</owners>
     <licenseUrl>https://github.com/rmc00/Maybe/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/rmc00/Maybe</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes></releaseNotes>
+    <description>A library of probabilistic data structures for .NET</description>
+    <releaseNotes>New support for bloom filters.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Probabilistic DataStructure bloomfilter</tags>
+    <tags>probabilistic data structure bloomfilter</tags>
   </metadata>
+  <files>    
+    <file src="bin\**\*.*" target="lib" />
+  </files>
 </package>
