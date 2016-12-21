@@ -10,4 +10,4 @@ artifacts:
 - path: '**\*.nupkg'
   name: nuget
 on_success:
-- cmd: nuget pack
+- cmd: nuget pack Maybe\Maybe.nuspec
