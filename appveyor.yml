@@ -1,10 +1,13 @@
 version: 1.0.{build}
 before_build:
-- cmd: >-
-    nuget restore
+- cmd: nuget restore
 build:
   project: Maybe.sln
   verbosity: minimal
+after_build:
+- cmd: nuget pack
 artifacts:
 - path: '**\*.nupkg'
   name: nuget
+on_success:
+- cmd: nuget pack
