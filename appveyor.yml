@@ -5,9 +5,7 @@ build:
   project: Maybe.sln
   verbosity: minimal
 after_build:
-- cmd: nuget pack
-artifacts:
-- path: '**\*.nupkg'
-  name: nuget
-on_success:
 - cmd: nuget pack Maybe\Maybe.nuspec
+artifacts:
+- path: '**\Maybe*.nupkg'
+  name: nuget
