@@ -14,23 +14,12 @@
     <copyright>Copyright 2016</copyright>
     <tags>probabilistic data structure bloomfilter</tags>
 	<dependencies>
-	  <dependency id="System.IO" version="4.1.0" />
-	  <dependency id="Newtonsoft.Json" version="9.0.1" />
-	  <dependency id="System.Runtime" version="4.1.0" />
-	  <dependency id="System.Runtime.Extensions" version="4.1.0" />
+	  <group>
+	    <dependency id="System.IO" version="4.1.0" />
+		<dependency id="Newtonsoft.Json" version="9.0.1" />
+		<dependency id="System.Runtime" version="4.1.0" />
+		<dependency id="System.Runtime.Extensions" version="4.1.0" />
+	  </group>
 	</dependencies>
-	<references>
-	  <reference file="System.IO.dll" />
-	  <reference file="System.Runtime.dll" />
-	  <reference file="System.Runtime.Extensions.dll" />
-	  <reference file="Newtonsoft.Json.dll" />
-	</references>
   </metadata>
-  <files>    
-    <file src="bin\**\*.*" target="lib" />
-    <file src="..\packages\**\System.IO.dll" target="lib" />
-	<file src="..\packages\**\System.Runtime.dll" target="lib" />
-	<file src="..\packages\**\System.Runtime.Extensions.dll" target="lib" />
-	<file src="..\packages\**\Newtonsoft.Json.dll" target="lib" />
-  </files>
 </package>
