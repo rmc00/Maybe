@@ -22,4 +22,7 @@
 	  </group>
 	</dependencies>
   </metadata>
+  <files>
+    <file src="bin\**\Maybe.dll" target="lib" />
+  </files>
 </package>
