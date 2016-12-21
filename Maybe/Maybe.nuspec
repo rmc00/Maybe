@@ -19,9 +19,18 @@
 	  <dependency id="System.Runtime" version="4.1.0" />
 	  <dependency id="System.Runtime.Extensions" version="4.1.0" />
 	</dependencies>
+	<references>
+	  <reference file="System.IO.dll" />
+	  <reference file="System.Runtime.dll" />
+	  <reference file="System.Runtime.Extensions.dll" />
+	  <reference file="Newtonsoft.Json.dll" />
+	</references>
   </metadata>
   <files>    
     <file src="bin\**\*.*" target="lib" />
-	<file src="..\packages\**\*.dll" target="lib" />
+    <file src="..\packages\**\System.IO.dll" target="lib" />
+	<file src="..\packages\**\System.Runtime.dll" target="lib" />
+	<file src="..\packages\**\System.Runtime.Extensions.dll" target="lib" />
+	<file src="..\packages\**\Newtonsoft.Json.dll" target="lib" />
   </files>
 </package>
