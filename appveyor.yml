@@ -9,3 +9,9 @@ after_build:
 artifacts:
 - path: '**\Maybe*.nupkg'
   name: nuget
+deploy:
+  provider: NuGet
+  api_key:
+    secure: hV+W79F9Qx9wIeq7Kn/iYbnFbmDDR27CpDNR98VTOMOSGgnmdte2E5lFbGFEdJ7x
+  skip_symbols: true
+  artifact: /.Maybe*\.nupkg/
