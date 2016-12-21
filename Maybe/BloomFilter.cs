@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Murmur;
+using Maybe.Utilities;
 
 namespace Maybe
 {
@@ -29,25 +29,9 @@ namespace Maybe
             if (expectedItems <= 0) { throw new ArgumentException("Expected items must be at least 1.", nameof(expectedItems)); }
             if (acceptableErrorRate < 0 || acceptableErrorRate > 1) { throw new ArgumentException("Acceptable error rate must be between 0 and 1.", nameof(acceptableErrorRate)); }
 
-            var bitWidth = (int)Math.Ceiling(expectedItems * Math.Log(acceptableErrorRate) / Math.Log(1.0 / Math.Pow(2.0, Math.Log(2.0))));
-            var numHashes = (int)Math.Round(Math.Log(2.0) * bitWidth / expectedItems);
+            var bitWidth = (int)Math.Ceiling(expectedItems * Math.Log(acceptableErrorRate) / Math.Log(1.0 / Math.Pow(2.0, Math.Log(2.0)))) * 2;
+            var numHashes = (int)Math.Round(Math.Log(2.0) * bitWidth / expectedItems) * 2;
             return new BloomFilter<T>(bitWidth, numHashes);
-        }
-
-        public double Truthiness
-        {
-            get
-            {
-                var set = 0d;
-                foreach (bool bit in _collectionState)
-                {
-                    if (bit)
-                    {
-                        set++;
-                    }
-                }
-                return set / _collectionState.Length;
-            }
         }
 
         /// <summary>
@@ -71,8 +55,11 @@ namespace Maybe
         private void DoHashAction(T item, Action<int> hashAction)
         {
             var primaryHash = item.GetHashCode();
-            var secondaryAlgo = MurmurHash.Create128();
-            var secondaryHash = BitConverter.ToInt32(secondaryAlgo.ComputeHash(ConvertToByteArray(item)), 0);
+            int secondaryHash;
+            using (var memoryStream = new MemoryStream(ConvertToByteArray(item)))
+            {
+                secondaryHash = MurmurHash3.Hash(memoryStream);
+            }
 
             for (var i = 0; i < _hashCount; i++)
             {
