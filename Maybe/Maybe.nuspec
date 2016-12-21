@@ -22,5 +22,6 @@
   </metadata>
   <files>    
     <file src="bin\**\*.*" target="lib" />
+	<file src="..\packages\**\*.dll" target="lib" />
   </files>
 </package>
