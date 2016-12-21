@@ -5,7 +5,7 @@ build:
   project: Maybe.sln
   verbosity: minimal
 after_build:
-- cmd: nuget pack Maybe\Maybe.nuspec
+- cmd: nuget pack Maybe\Maybe.nuspec -Version %appveyor_build_version%
 artifacts:
 - path: '**\Maybe*.nupkg'
   name: nuget
