@@ -12,7 +12,7 @@
     <description>A library of probabilistic data structures for .NET</description>
     <releaseNotes>New support for bloom filters.</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>probabilistic data structure bloomfilter</tags>
+    <tags>probabilistic data structure bloomfilter bloom filter netstandard15</tags>
 	<dependencies>
 	  <group>
 	    <dependency id="System.IO" version="4.1.0" />
