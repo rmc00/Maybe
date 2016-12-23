@@ -5,7 +5,7 @@ using System.Text;
 using Maybe.Utilities;
 using Newtonsoft.Json;
 
-namespace Maybe
+namespace Maybe.BloomFilter
 {
     public class BloomFilter<T>
     {

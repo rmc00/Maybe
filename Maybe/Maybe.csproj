@@ -39,8 +39,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BloomFilter.cs" />
+    <Compile Include="BloomFilter\BloomFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkipList\Node.cs" />
+    <Compile Include="SkipList\SkipList.cs" />
     <Compile Include="Utilities\MurmurHash3.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,12 +1,12 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
+using Maybe.BloomFilter;
 using Xunit;
 
-namespace Maybe.Tests
+namespace Maybe.Tests.BloomFilter
 {
     public class BloomFilterTests
     {
-        [Fact, Category("Unit")]
+        [Fact]
         public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
             var filter = BloomFilter<int>.Create(50, 0.02);
@@ -14,7 +14,7 @@ namespace Maybe.Tests
             Assert.True(filter.Contains(42));
         }
 
-        [Fact, Category("Unit")]
+        [Fact]
         public void Contains_WithFreshFilter_ShouldReturnFalse()
         {
             var filter = BloomFilter<int>.Create(50, 0.02);

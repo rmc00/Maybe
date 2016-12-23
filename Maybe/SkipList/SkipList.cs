@@ -1,0 +1,131 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Maybe.SkipList
+{
+    /// <summary>
+    /// A sorted collection which allows for fast search by creating hierarchies of links between nodes
+    /// </summary>
+    /// <typeparam name="T">The type to be contained in the <see cref="SkipList{T}"/></typeparam>
+    public class SkipList<T> : IEnumerable<T>
+    {
+        private readonly Node<T> _headNode = new Node<T>(default(T), 33); // The max. number of levels is 33
+        private readonly Random _randomGenerator = new Random();
+        private int _levels = 1;
+        private readonly IComparer<T> _comparer = Comparer<T>.Default;
+
+        /// <summary>
+        /// Creates a new <see cref="SkipList{T}"/>
+        /// </summary>
+        /// <param name="comparer">An optional comparer for sorting values. If null the default <see cref="Comparer{T}"/> will be used.</param>
+        public SkipList(IComparer<T> comparer=null)
+        {
+            if (comparer != null)
+            {
+                _comparer = comparer;
+            }
+        }
+
+        /// <summary>
+        /// Adds the value to the skip list
+        /// </summary>
+        public void Add(T value)
+        {
+            var level = 0;
+            for (var r = _randomGenerator.Next(); (r & 1) == 1; r >>= 1)
+            {
+                level++;
+                if (level == _levels)
+                {
+                    _levels++;
+                    break;
+                }
+            }
+
+            var addNode = new Node<T>(value, level + 1);
+            var currentNode = _headNode;
+            for (var currentLevel = _levels - 1; currentLevel >= 0; currentLevel--)
+            {
+                while (currentNode.HasNextAtLevel(level))
+                {
+                    if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 1)
+                    {
+                        // current value has skipped over the needed position, need to drop down a level and look there
+                        break;
+                    }
+                    currentNode = currentNode.Next[currentLevel];
+                }
+
+                if (currentLevel <= level)
+                {
+                    // add the node here
+                    addNode.Next[currentLevel] = currentNode.Next[currentLevel];
+                    currentNode.Next[currentLevel] = addNode;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns whether a particular value already exists in the skip list
+        /// </summary>
+        public bool Contains(T value)
+        {
+            var currentNode = _headNode;
+            for (var currentLevel = _levels - 1; currentLevel >= 0; currentLevel--)
+            {
+                while (currentNode.HasNextAtLevel(currentLevel))
+                {
+                    if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 1) break;
+                    if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 0) return true;
+                    currentNode = currentNode.Next[currentLevel];
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to remove one occurence of a particular value from the skip list. Returns
+        /// whether the value was found in the skip list.
+        /// </summary>
+        public bool Remove(T value)
+        {
+            var currentNode = _headNode;
+
+            var found = false;
+            for (var currentLevel = _levels - 1; currentLevel >= 0; currentLevel--)
+            {
+                while (currentNode.HasNextAtLevel(currentLevel))
+                {
+                    if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 0)
+                    {
+                        found = true;
+                        currentNode.Next[currentLevel] = currentNode.Next[currentLevel].Next[currentLevel];
+                        break;
+                    }
+
+                    if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 1) { break; }
+
+                    currentNode = currentNode.Next[currentLevel];
+                }
+            }
+
+            return found;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var currentNode = _headNode.Next[0];
+            while (currentNode.HasNextAtLevel(0))
+            {
+                yield return currentNode.Value;
+                currentNode = currentNode.Next[0];
+            }
+        }
+    }
+}
