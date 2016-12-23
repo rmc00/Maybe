@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Maybe.SkipList
 {
@@ -47,7 +48,7 @@ namespace Maybe.SkipList
             var currentNode = _headNode;
             for (var currentLevel = _levels - 1; currentLevel >= 0; currentLevel--)
             {
-                while (currentNode.HasNextAtLevel(level))
+                while (currentNode.HasNextAtLevel(currentLevel))
                 {
                     if (_comparer.Compare(currentNode.Next[currentLevel].Value, value) == 1)
                     {
@@ -63,6 +64,19 @@ namespace Maybe.SkipList
                     addNode.Next[currentLevel] = currentNode.Next[currentLevel];
                     currentNode.Next[currentLevel] = addNode;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds multiple values to the collection
+        /// </summary>
+        /// <param name="values">A collection of values which should all be added</param>
+        public void AddRange(IEnumerable<T> values)
+        {
+            if (values == null) return;
+            foreach (var value in values)
+            {
+                Add(value);
             }
         }
 
@@ -121,10 +135,15 @@ namespace Maybe.SkipList
         public IEnumerator<T> GetEnumerator()
         {
             var currentNode = _headNode.Next[0];
-            while (currentNode.HasNextAtLevel(0))
+            do
             {
                 yield return currentNode.Value;
                 currentNode = currentNode.Next[0];
+            } while (currentNode != null && currentNode.HasNextAtLevel(0));
+
+            if (currentNode != null)
+            {
+                yield return currentNode.Value;
             }
         }
     }
