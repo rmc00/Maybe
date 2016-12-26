@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BloomFilter\BloomFilter.cs" />
+    <Compile Include="BloomFilter\BloomFilterBase.cs" />
+    <Compile Include="BloomFilter\CountingBloomFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkipList\Node.cs" />
     <Compile Include="SkipList\SkipList.cs" />

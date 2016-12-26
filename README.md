@@ -1,7 +1,7 @@
 # Maybe.NET
 [![Build status](https://ci.appveyor.com/api/projects/status/vqsk4kisx1xogmeh?svg=true)](https://ci.appveyor.com/project/rmc00/maybe)
 
-Maybe.NET is a lightweight library of probabilistic data structures for .NET. The library currently features Bloom Filters and Skip Lists, and more data structures are coming soon! Stop scouring the Internet and re-writing the same classes over and over -- use Maybe.NET.
+Maybe.NET is a lightweight library of probabilistic data structures for .NET. The library currently features Bloom Filters, Counting Bloom Filters, and Skip Lists. And more data structures are coming soon! Stop scouring the Internet and re-writing the same classes over and over -- use Maybe.NET.
 
 ## Installation
 
@@ -23,6 +23,17 @@ filter.Add(33);
 
 filter.Contains(55); // returns false (the item is NOT in the collection)
 filter.Contains(27); // returns true (the item MIGHT be in the collection)
+```
+
+### Counting Bloom Filter Usage
+Counting bloom filters extend regular bloom filter functionality by allowing items to be removed from the collection. This can be useful functionality, but it opens the possibility of false negatives.
+
+```
+var filter = CountingBloomFilter<int>.Create(50, 0.02);
+filter.Add(42);
+filter.Contains(42); // returns true
+filter.Remove(42);
+filter.Contains(42); // returns false
 ```
 
 ### Skip List Usage
