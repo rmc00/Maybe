@@ -10,9 +10,9 @@
     <projectUrl>https://github.com/rmc00/Maybe</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library of probabilistic data structures for .NET</description>
-    <releaseNotes>New support for skip lists</releaseNotes>
+    <releaseNotes>New support for counting bloom filters!</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>probabilistic data structure bloomfilter bloom filter netstandard15 skip list skiplist</tags>
+    <tags>probabilistic data structure bloomfilter bloom filter netstandard15 skip list skiplist counting bloom filter</tags>
 	<dependencies>
 	  <group>
 	    <dependency id="System.IO" version="4.1.0" />
