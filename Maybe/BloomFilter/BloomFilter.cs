@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 
 namespace Maybe.BloomFilter
 {
@@ -7,10 +8,12 @@ namespace Maybe.BloomFilter
     {
         private readonly BitArray _collectionState;
 
-        private BloomFilter(int bitArraySize, int numHashes) : base(bitArraySize, numHashes)
+        protected BloomFilter(int bitArraySize, int numHashes) : base(bitArraySize, numHashes)
         {
             _collectionState = new BitArray(bitArraySize, false);
         }
+
+        public override double FillRatio => _collectionState.Cast<bool>().Count(bit => bit) / (double)_collectionState.Length;
 
         /// <summary>
         /// Creates a new bloom filter with appropriate bit width and hash functions for your expected size and error rate.

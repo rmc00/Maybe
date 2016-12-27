@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Maybe.BloomFilter
 {
@@ -10,7 +11,7 @@ namespace Maybe.BloomFilter
     {
         private readonly byte[] _collectionState;
 
-        private CountingBloomFilter(int arraySize, int numHashes) : base(arraySize, numHashes)
+        protected CountingBloomFilter(int arraySize, int numHashes) : base(arraySize, numHashes)
         {
             _collectionState = new byte[arraySize];
             for (var i = 0; i < _collectionState.Length; i++)
@@ -18,6 +19,8 @@ namespace Maybe.BloomFilter
                 _collectionState[i] = 0;
             }
         }
+
+        public override double FillRatio => _collectionState.Count(position => position > 0) / (double)_collectionState.Length;
 
         /// <summary>
         /// Creates a new counting bloom filter with appropriate bit width and hash functions for your expected size and error rate.

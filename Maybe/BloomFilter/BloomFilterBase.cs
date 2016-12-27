@@ -16,6 +16,11 @@ namespace Maybe.BloomFilter
             _collectionLength = bitArraySize;
         }
 
+        /// <summary>
+        /// Represents the ratio of positions that are set in the bloom filter to the total number of positions
+        /// </summary>
+        public abstract double FillRatio { get; }
+
         protected void DoHashAction(T item, Action<int> hashAction)
         {
             var primaryHash = item.GetHashCode();

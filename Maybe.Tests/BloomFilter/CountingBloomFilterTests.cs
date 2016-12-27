@@ -61,5 +61,29 @@ namespace Maybe.Tests.BloomFilter
             filter.Remove(27);
             Assert.False(filter.Contains(27));
         }
+
+        [Fact]
+        public void FillRatio_WithNewFilter_ShouldBeZero()
+        {
+            var filter = CountingBloomFilter<int>.Create(1000, 0.05);
+            Assert.Equal(0d, filter.FillRatio);
+        }
+
+        [Fact]
+        public void FillRatio_WithOneItem_ShouldBeNumHashesDividedByBitArraySize()
+        {
+            var filter = new MyTestBloomFilter<int>(250, 3);
+            filter.Add(42);
+            Assert.Equal(3d / 250d, filter.FillRatio);
+        }
+
+        private class MyTestBloomFilter<T> : CountingBloomFilter<T>
+        {
+            public MyTestBloomFilter(int bitArraySize, int numHashes)
+                : base(bitArraySize, numHashes)
+            {
+
+            }
+        }
     }
-}
+    }
