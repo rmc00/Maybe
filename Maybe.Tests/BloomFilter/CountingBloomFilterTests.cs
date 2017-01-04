@@ -77,6 +77,18 @@ namespace Maybe.Tests.BloomFilter
             Assert.Equal(3d / 250d, filter.FillRatio);
         }
 
+		[Fact]
+        public void Add_WithCounterAtMaxValue_ShouldRemainConstant()
+        {
+            var filter = CountingBloomFilter<int>.Create(50, 0.01);
+            while(filter.CounterAt(42) < byte.MaxValue)
+            {
+                filter.Add(42);
+            }
+            filter.Add(42); // one additional add to attempt to roll over byte.maxvalue
+            Assert.True(filter.Contains(42));
+        }
+
         private class MyTestBloomFilter<T> : CountingBloomFilter<T>
         {
             public MyTestBloomFilter(int bitArraySize, int numHashes)
