@@ -9,7 +9,7 @@ namespace Maybe.BloomFilter
     /// </summary>
     public class ScalableBloomFilter<T> : IBloomFilter<T>
     {
-        private const int MinimumCapacity = 50;
+        public const int MinimumCapacity = 50;
 
         private IEnumerable<BloomFilterBase<T>> _filters;
         private readonly double _maxErrorRate;
@@ -27,17 +27,17 @@ namespace Maybe.BloomFilter
             {
                 _capacity = Math.Max(MinimumCapacity, _capacity * 2);
                 _filters = AddNewFilter(_maxErrorRate, _capacity, _filters);
+                _activeItemCount = 0;
             }
             _activeItemCount++;
             _filters.Last().Add(item);
         }
 
-        public bool Contains(T item)
-        {
-            return _filters != null && _filters.Any(filter => filter.Contains(item));
-        }
+        public bool Contains(T item) => _filters != null && _filters.Any(filter => filter.Contains(item));
 
-        private IEnumerable<BloomFilterBase<T>> AddNewFilter(double maxError, int capacity, IEnumerable<BloomFilterBase<T>> currentFilters)
+        public int NumberFilters => _filters.Count();
+
+        private static IEnumerable<BloomFilterBase<T>> AddNewFilter(double maxError, int capacity, IEnumerable<BloomFilterBase<T>> currentFilters)
         {
             var filters = (currentFilters ?? new List<BloomFilterBase<T>>()).ToList();
             filters.Add(BloomFilter<T>.Create(capacity, maxError));

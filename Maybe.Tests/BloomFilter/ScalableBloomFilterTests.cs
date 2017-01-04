@@ -19,5 +19,16 @@ namespace Maybe.Tests.BloomFilter
             var filter = new ScalableBloomFilter<int>(0.02);
             Assert.False(filter.Contains(42));
         }
+
+        [Fact]
+        public void NumberFilters_WithThreeTimesFirstCapacity_ShouldBeTwo()
+        {
+            var filter = new ScalableBloomFilter<int>(0.02);
+            for (var i = 0; i < 3*ScalableBloomFilter<int>.MinimumCapacity; i++)
+            {
+                filter.Add(i);
+            }
+            Assert.Equal(2, filter.NumberFilters);
+        }
     }
 }
