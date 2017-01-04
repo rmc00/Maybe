@@ -43,7 +43,7 @@ namespace Maybe.BloomFilter
         /// Adds an item to the counting bloom filter
         /// </summary>
         /// <param name="item">The item which should be added</param>
-        public void Add(T item) => DoHashAction(item, hash =>
+        public override void Add(T item) => DoHashAction(item, hash =>
         {
             if (_collectionState[hash] < byte.MaxValue)
             {
@@ -56,7 +56,7 @@ namespace Maybe.BloomFilter
         /// </summary>
         /// <param name="item">The item for which to search in the bloom filter</param>
         /// <returns>False if the item is NOT in the counting bloom filter. True if the item MIGHT be in the counting bloom filter.</returns>
-        public bool Contains(T item)
+        public override bool Contains(T item)
         {
             var containsItem = true;
             DoHashAction(item, hash => containsItem = containsItem && _collectionState[hash] > 0);

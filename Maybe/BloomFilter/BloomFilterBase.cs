@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Maybe.BloomFilter
 {
-    public abstract class BloomFilterBase<T>
+    public abstract class BloomFilterBase<T> : IBloomFilter<T>
     {
         protected int NumberHashes;
         private readonly int _collectionLength;
@@ -15,6 +15,19 @@ namespace Maybe.BloomFilter
             NumberHashes = numberHashes;
             _collectionLength = bitArraySize;
         }
+
+        /// <summary>
+        /// Adds an item to the bloom filter
+        /// </summary>
+        /// <param name="item">The item which should be added</param>
+        public abstract void Add(T item);
+
+        /// <summary>
+        /// Checks if this bloom filter currently contains an item
+        /// </summary>
+        /// <param name="item">The item for which to search in the bloom filter</param>
+        /// <returns>False if the item is NOT in the bloom filter. True if the item MIGHT be in the bloom filter.</returns>
+        public abstract bool Contains(T item);
 
         /// <summary>
         /// Represents the ratio of positions that are set in the bloom filter to the total number of positions
