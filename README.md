@@ -36,6 +36,19 @@ filter.Remove(42);
 filter.Contains(42); // returns false
 ```
 
+### Scalable Bloom Filter Usage
+Scalable bloom filters offer the same Add and Contains operations that normal BloomFilter<T> offers. The difference is that ScalableBloomFilter<T> only needs to know the max error rate. The capacity of the bloom filter will grow by adding additional bloom filters internally, which allows the developer to add more items to the bloom filter without worrying about incurring too high of a false positive rate.
+
+```
+var filter = new ScalableBloomFilter<int>(0.02); // specifying 2% max error rate, no capacity required
+filter.Add(42);
+filter.Add(27);
+filter.Add(33); // add as many items as needed. The scalable bloom filter will create as many filters as needed to hold data and keep error rates within tolerance.
+
+filter.Contains(55); // returns false (the item is NOT in the collection)
+filter.Contains(27); // returns true (the item MIGHT be in the collection)
+```
+
 ### Skip List Usage
 Skip lists are sort of like a singly linked list, but they have additional links to other nodes further out in the list. The structure of the links is similar to building Binary Search into the Skip List. However, the Skip List uses randomness to avoid expensive balancing operations when the list is being modified. This structure allows for searching in logarithmic time on average, but doesn't incur the cost of balancing a tree that is normally incurred for fast search. See the [wikipedia article](https://en.wikipedia.org/wiki/Skip_list) for detailed information.
 
