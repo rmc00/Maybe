@@ -61,5 +61,17 @@ namespace Maybe.Tests.BloomFilter
             filter.Remove(27);
             Assert.False(filter.Contains(27));
         }
+
+		[Fact]
+        public void Add_WithCounterAtMaxValue_ShouldRemainConstant()
+        {
+            var filter = CountingBloomFilter<int>.Create(50, 0.01);
+            while(filter.CounterAt(42) < byte.MaxValue)
+            {
+                filter.Add(42);
+            }
+            filter.Add(42); // one additional add to attempt to roll over byte.maxvalue
+            Assert.True(filter.Contains(42));
+        }
     }
 }

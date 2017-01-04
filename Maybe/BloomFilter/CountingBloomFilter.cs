@@ -10,7 +10,7 @@ namespace Maybe.BloomFilter
     {
         private readonly byte[] _collectionState;
 
-        private CountingBloomFilter(int arraySize, int numHashes) : base(arraySize, numHashes)
+        protected CountingBloomFilter(int arraySize, int numHashes) : base(arraySize, numHashes)
         {
             _collectionState = new byte[arraySize];
             for (var i = 0; i < _collectionState.Length; i++)
@@ -40,7 +40,13 @@ namespace Maybe.BloomFilter
         /// Adds an item to the counting bloom filter
         /// </summary>
         /// <param name="item">The item which should be added</param>
-        public void Add(T item) => DoHashAction(item, hash => _collectionState[hash]++);
+        public void Add(T item) => DoHashAction(item, hash =>
+        {
+            if (_collectionState[hash] < byte.MaxValue)
+            {
+                _collectionState[hash]++;
+            }
+        });
 
         /// <summary>
         /// Checks if this counting bloom filter currently contains an item
@@ -65,6 +71,14 @@ namespace Maybe.BloomFilter
 
             DoHashAction(item, hash => _collectionState[hash]--);
             return true;
+        }
+
+        /// <summary>
+        /// Returns the counter value at a given index if the index is valid. 0 if the index is invalid.
+        /// </summary>
+        public byte CounterAt(int index)
+        {
+            return index < 0 || index >= _collectionState.Length ? (byte)0 : _collectionState[index];
         }
     }
 }
