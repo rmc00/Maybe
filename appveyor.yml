@@ -1,10 +1,10 @@
 version: 1.0.{build}
+configuration: Release
 before_build:
 - cmd: nuget restore
 build:
   project: Maybe.sln
   verbosity: minimal
-  configuration:release
 after_build:
 - cmd: nuget pack Maybe\Maybe.nuspec -Version %appveyor_build_version%
 artifacts:
