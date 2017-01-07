@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/rmc00/Maybe/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/rmc00/Maybe</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A library of probabilistic data structures for .NET. Contains basic bloom filters, counting bloom filters, scalable bloom filters, and skip lists!</description>
+    <description>Maybe.NET is a library of probabilistic data structures. Instantly start using bloom filters, skip lists, and more!</description>
     <releaseNotes>New support for scalable bloom filters!</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>probabilistic data structure bloomfilter bloom filter netstandard15 skip list skiplist counting bloom filter scalable bloom filter</tags>
