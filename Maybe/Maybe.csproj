@@ -44,6 +44,8 @@
     <Compile Include="BloomFilter\CountingBloomFilter.cs" />
     <Compile Include="BloomFilter\IBloomFilter.cs" />
     <Compile Include="BloomFilter\ScalableBloomFilter.cs" />
+    <Compile Include="CountMinSketch\CountMinSketch.cs" />
+    <Compile Include="CountMinSketch\CountMinSketchBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkipList\Node.cs" />
     <Compile Include="SkipList\SkipList.cs" />
