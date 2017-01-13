@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Maybe.Utilities;
+using Maybe.Hashing;
 using Newtonsoft.Json;
 
 namespace Maybe.BloomFilter

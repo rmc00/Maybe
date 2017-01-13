@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="BloomFilter\CountingBloomFilterTests.cs" />
     <Compile Include="BloomFilter\ScalableBloomFilterTests.cs" />
+    <Compile Include="CountMinSketch\CountMinSketchTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BloomFilter\BloomFilterTests.cs" />
     <Compile Include="SkipList\NodeTests.cs" />

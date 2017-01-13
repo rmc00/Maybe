@@ -1,6 +1,6 @@
 ﻿namespace Maybe.CountMinSketch
 {
-    internal abstract class CountMinSketchBase<T>
+    public abstract class CountMinSketchBase<T>
     {
         /// <summary>
         /// Returns the relative error, epsilon, of this <see cref="CountMinSketchBase{T}"/>
@@ -22,6 +22,16 @@
         /// Returns the total count of items added to this <see cref="CountMinSketchBase{T}"/>
         /// </summary>
         public abstract long TotalCount { get; }
+
+        /// <summary>
+        /// Returns the random seed that was used to initialize this <see cref="CountMinSketchBase{T}"/>
+        /// </summary>
+        public abstract int Seed { get; }
+
+        /// <summary>
+        /// Exposes the <see cref="CountMinSketchBase{T}"/>'s counter table
+        /// </summary>
+        public abstract long[,] Table { get; }
 
         /// <summary>
         /// Increments counters for the item
@@ -50,7 +60,7 @@
         /// <param name="width">The width of the count-min sketch. Must be positive.</param>
         /// <param name="seed">A random seed for hashing.</param>
         /// <returns>A new <see cref="CountMinSketchBase{T}"/> created with the provided parameters</returns>
-        //public static CountMinSketchBase<T> Create(int depth, int width, int seed) => new CountMinSketch(depth, width, seed);
+        public static CountMinSketchBase<T> Create(int depth, int width, int seed) => new CountMinSketch<T>(depth, width, seed);
 
         /// <summary>
         /// Creates a new <see cref="CountMinSketchBase{T}"/> with given relative error (epsilon), confidence, and random seed.
@@ -59,6 +69,6 @@
         /// <param name="confidence">Confidence of frequence estimations. Must be between 0 and 1</param>
         /// <param name="seed">A random seed for hashing.</param>
         /// <returns>A new <see cref="CountMinSketchBase{T}"/> created with the provided parameters</returns>
-        //public static CountMinSketchBase<T> Create(double epsilon, double confidence, int seed) => new CountMinSketch(epsilon, confidence, seed);
+        public static CountMinSketchBase<T> Create(double epsilon, double confidence, int seed) => new CountMinSketch<T>(epsilon, confidence, seed);
     }
 }

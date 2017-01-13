@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Maybe.Utilities
+namespace Maybe.Hashing
 {
     internal class MurmurHash3
     {
