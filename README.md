@@ -58,6 +58,18 @@ list.Contains(42); // returns true
 list.Contains(91); // returns false
 ```
 
+### Count Min Sketch Usage
+Count min sketch is a data structure that allows you to track the frequency of an item occurring within a large set. The count min sketch will never undercount items, but it can overcount by a controllable confidence interval. This is great for counting in very large (think big data) datasets where you can't deterministically fit everything into memory.
+
+```
+var sketch = new CountMinSketch<string>(5d, 0.95d, 42);
+sketch.Add("test");
+sketch.Add("foobar");
+var estimate = sketch.EstimateCount("test"); // returns 1
+```
+
+Count min sketch also supports merging for parallel work. You can divide your workload and process in multiple Count Min Sketches in parallel. Then, merge the sketches from each workload at the end to see the overall result. Just make sure to initialize the sketches with the same configuration.
+
 ## Contributing
 Contributions are always welcome! Please feel free to submit pull requests and to open issues. I prefer to have tests on all public methods if possible and where ever else makes sense.
 
