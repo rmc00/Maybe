@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using Maybe.Hashing;
-using Newtonsoft.Json;
+using Maybe.Utilities;
 
 namespace Maybe.BloomFilter
 {
@@ -36,20 +33,11 @@ namespace Maybe.BloomFilter
 
         protected void DoHashAction(T item, Action<int> hashAction)
         {
-            var primaryHash = item.GetHashCode();
-            int secondaryHash;
-            using (var memoryStream = new MemoryStream(ConvertToByteArray(item)))
+            var hashes = MurmurHash3.GetHashes(item, NumberHashes, _collectionLength);
+            foreach (var hash in hashes)
             {
-                secondaryHash = MurmurHash3.Hash(memoryStream);
-            }
-
-            for (var i = 0; i < NumberHashes; i++)
-            {
-                var resultingHash = Math.Abs((primaryHash + i * secondaryHash) % _collectionLength);
-                hashAction(resultingHash);
+                hashAction(hash);
             }
         }
-
-        private static byte[] ConvertToByteArray(object item) => item == null ? null : Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(item));
     }
 }

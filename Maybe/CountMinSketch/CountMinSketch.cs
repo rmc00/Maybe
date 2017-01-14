@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using Maybe.Hashing;
-using Newtonsoft.Json;
+using System.Linq;
+using Maybe.Utilities;
 
 namespace Maybe.CountMinSketch
 {
@@ -91,21 +89,13 @@ namespace Maybe.CountMinSketch
         private static int[] GetHashBuckets(T item, int hashCount, int max)
         {
             var result = new int[hashCount];
-            var hash1 = item.GetHashCode();
-            int hash2;
-            using (var memoryStream = new MemoryStream(ConvertToByteArray(item)))
-            {
-                hash2 = MurmurHash3.Hash(memoryStream);
-            }
-
+            var hashes = MurmurHash3.GetHashes(item, hashCount, max).ToList();
             for (var i = 0; i < hashCount; i++)
             {
-                result[i] = Math.Abs((hash1 + i*hash2)%max);
+                result[i] = hashes[i];
             }
             return result;
         }
-
-        
 
         public override CountMinSketchBase<T> MergeInPlace(CountMinSketchBase<T> other)
         {
@@ -124,7 +114,5 @@ namespace Maybe.CountMinSketch
             _totalCount += other.TotalCount;
             return this;
         }
-
-        private static byte[] ConvertToByteArray(object item) => item == null ? null : Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(item));
     }
 }
