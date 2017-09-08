@@ -1,66 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A0B7E976-C7AF-478D-B372-0A21CFE13119}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Maybe</RootNamespace>
-    <AssemblyName>Maybe</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworks>net45;netstandard1.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.78</Version>
+    <Authors>Ryan McCoy</Authors>
+    <Company>Ryan McCoy</Company>
+    <PackageId>Maybe.NET</PackageId>
+    <Product>Maybe.NET</Product>
+    <Description>Maybe.NET is a library of probabilistic data structures. Instantly start using bloom filters, skip lists, count min sketch, and more!</Description>
+    <Copyright>Copyright 2016</Copyright>
+    <PackageLicenseUrl>https://github.com/rmc00/Maybe/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/rmc00/Maybe</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/rmc00/Maybe/raw/master/Maybe/assets/maybe-icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/rmc00/Maybe.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>probabilistic data structure bloomfilter bloom filter netstandard15 skip list skiplist counting bloom filter scalable bloom filter count-min-sketch count min sketch</PackageTags>
+    <PackageReleaseNotes>New support for count min sketch!</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="project.json" />
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BloomFilter\BloomFilter.cs" />
-    <Compile Include="BloomFilter\BloomFilterBase.cs" />
-    <Compile Include="BloomFilter\CountingBloomFilter.cs" />
-    <Compile Include="BloomFilter\IBloomFilter.cs" />
-    <Compile Include="BloomFilter\ScalableBloomFilter.cs" />
-    <Compile Include="CountMinSketch\CountMinSketch.cs" />
-    <Compile Include="CountMinSketch\CountMinSketchBase.cs" />
-    <Compile Include="CountMinSketch\IncompatibleMergeException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SkipList\Node.cs" />
-    <Compile Include="SkipList\SkipList.cs" />
-    <Compile Include="Utilities\ByteConverter.cs" />
-    <Compile Include="Utilities\MurmurHash3.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
