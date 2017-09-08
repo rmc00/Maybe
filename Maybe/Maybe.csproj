@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net20;net45;netstandard1.0;netstandard2.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.79</Version>
+    <Version>1.0.80</Version>
     <Authors>Ryan McCoy</Authors>
     <Company>Ryan McCoy</Company>
     <PackageId>Maybe.NET</PackageId>
