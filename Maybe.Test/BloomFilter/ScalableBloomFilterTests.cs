@@ -1,7 +1,7 @@
 ﻿using Maybe.BloomFilter;
 using Xunit;
 
-namespace Maybe.Tests.BloomFilter
+namespace Maybe.Test.BloomFilter
 {
     public class ScalableBloomFilterTests
     {

@@ -2,7 +2,7 @@
 using Maybe.SkipList;
 using Xunit;
 
-namespace Maybe.Tests.SkipList
+namespace Maybe.Test.SkipList
 {
     public class NodeTests
     {
@@ -25,14 +25,14 @@ namespace Maybe.Tests.SkipList
         [Fact]
         public void Constructor_WithNegativeLevel_ShouldThrowArgumentException()
         {
-            Assert.Throws(typeof(ArgumentException), () => new Node<int>(42, -5));
+            Assert.Throws<ArgumentException>(() => new Node<int>(42, -5));
         }
 
         [Fact]
         public void HasNextAtLevel_WithNegativeLevel_ShouldThrowArgumentException()
         {
             var node = new Node<int>(42, 2);
-            Assert.Throws(typeof(ArgumentException), () => node.HasNextAtLevel(-2));
+            Assert.Throws<ArgumentException>(() => node.HasNextAtLevel(-2));
         }
 
         [Fact]

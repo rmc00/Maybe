@@ -85,7 +85,7 @@ namespace Maybe.Tests.CountMinSketch
             }
             sketch.MergeInPlace(sketch2);
 
-            Assert.Equal(sketch.TotalCount, 200);
+            Assert.Equal(200, sketch.TotalCount);
         }
 
         [Fact]

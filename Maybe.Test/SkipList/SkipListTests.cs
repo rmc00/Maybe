@@ -3,7 +3,7 @@ using System.Linq;
 using Maybe.SkipList;
 using Xunit;
 
-namespace Maybe.Tests.SkipList
+namespace Maybe.Test.SkipList
 {
     public class SkipListTests
     {
@@ -12,7 +12,7 @@ namespace Maybe.Tests.SkipList
         {
             var list = new SkipList<int>();
             list.Add(42);
-            Assert.Equal(1, list.Count());
+            Assert.Single(list);
         }
 
         [Fact]
