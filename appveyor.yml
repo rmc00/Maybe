@@ -1,21 +1,11 @@
 version: 1.0.{build}
-image: Visual Studio 2017
 configuration: Release
-before_build:
-- cmd: nuget restore
-build:
-  project: Maybe.sln
-  verbosity: minimal
+nuget:
+  account_feed: true
+build_script:
+- ps: .\build\build.ps1
 artifacts:
-- path: '**\Maybe*.nupkg'
-  name: nuget
-deploy:
-  provider: NuGet
-  name: NuGet
-  on:
-    branch: master
-  api_key:
-    secure: VPOPSDh1vz1GzJuEBqJ+s95BOQ1T5wvIHi6/OnFSSmFjfhWk2JJ1WBwoQDr9103Q
-  skip_symbols: true
-  artifact: /.*\.nupkg/
-  
+- path: '**\*.nupkg'
+  name: nuget-push
+on_success:
+- cmd: nuget pack Maybe\Maybe.nuspec
