@@ -5,14 +5,14 @@ var target = Argument("target", "Run-Tests");
 
 Task("Restore-NuGet-Packages").Does(() =>
 {
-    DotNetCoreRestore("../Maybe.sln");
+    DotNetCoreRestore("Maybe.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    DotNetCoreBuild("..\\Maybe.sln", new DotNetCoreBuildSettings
+    DotNetCoreBuild("Maybe.sln", new DotNetCoreBuildSettings
     {
         Configuration = "release",
         ArgumentCustomization = arg => arg.AppendSwitch("/p:DebugType","=","Full")
@@ -31,7 +31,7 @@ Task("Run-Tests")
     }
     .WithFilter("+[*]* -[*.Tests*]*");
 
-    var project = "..\\Maybe.Test\\Maybe.Test.csproj";
+    var project = "Maybe.Test\\Maybe.Test.csproj";
     try 
     {
         //var projectFile = MakeAbsolute(project).ToString();
