@@ -5,7 +5,7 @@ nuget:
 build_script:
 - ps: .\build.ps1
 artifacts:
-- path: '**\*.nupkg'
+- path: '**\Maybe*.nupkg'
   name: nuget-push
 on_success:
 - cmd: nuget pack Maybe\Maybe.nuspec
