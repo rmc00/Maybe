@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Maybe.NET</id>
-    <version>1.0.0.0</version>
+    <version>$version$</version>
     <title>Maybe.NET</title>
     <authors>Ryan McCoy</authors>
     <owners>Ryan McCoy</owners>
@@ -17,7 +17,6 @@
 	<dependencies>
 	  <group>
 	    <dependency id="System.IO" version="4.1.0" />
-		<dependency id="Newtonsoft.Json" version="9.0.1" />
 		<dependency id="System.Runtime" version="4.1.0" />
 		<dependency id="System.Runtime.Extensions" version="4.1.0" />
 	  </group>
