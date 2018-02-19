@@ -1,5 +1,6 @@
 # Maybe.NET
 [![Build status](https://ci.appveyor.com/api/projects/status/vqsk4kisx1xogmeh?svg=true)](https://ci.appveyor.com/project/rmc00/maybe)
+[![Coverage Status](https://coveralls.io/repos/github/rmc00/Maybe/badge.svg?branch=master)](https://coveralls.io/github/rmc00/Maybe?branch=master)
 
 Maybe.NET is a lightweight library of probabilistic data structures for .NET. The library currently features Bloom Filters, Counting Bloom Filters, and Skip Lists. And more data structures are coming soon! Stop scouring the Internet and re-writing the same classes over and over -- use Maybe.NET.
 
