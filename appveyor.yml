@@ -15,3 +15,12 @@ build_script:
 artifacts:
 - path: '**\Maybe*.nupkg'
   name: nuget-push
+deploy:
+  provider: NuGet
+  name: NuGet
+  on:
+    branch: master
+  api_key:
+    secure: VPOPSDh1vz1GzJuEBqJ+s95BOQ1T5wvIHi6/OnFSSmFjfhWk2JJ1WBwoQDr9103Q
+  skip_symbols: true
+  artifact: /Maybe.*\.nupkg/
