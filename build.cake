@@ -1,3 +1,5 @@
+#addin Cake.Coveralls
+#tool coveralls.io
 #tool "nuget:https://www.nuget.org/api/v2?package=OpenCover&version=4.6.519"
 #tool "nuget:https://www.nuget.org/api/v2?package=ReportGenerator&version=2.4.5"
 
@@ -51,10 +53,15 @@ Task("Run-Tests")
 
     //ReportGenerator(paths.Files.TestCoverageOutput, paths.Directories.TestResults);
 
-    if(success == false)
+    if(!success)
     {
         throw new CakeException("There was an error while running the tests");
     }
+
+    CoverallsIo("coverage.xml", new CoverallsIoSettings()
+    {
+        RepoToken = "PH6pHukW5nOSJNt0hCslvwFoZd3Fv6IC0"
+    });
 });
 
 RunTarget(target);
