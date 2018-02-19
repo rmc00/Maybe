@@ -1,5 +1,13 @@
 version: 1.0.{build}
 configuration: Release
+dotnet_csproj:
+  patch: true
+  file: Maybe\Maybe.csproj
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 nuget:
   account_feed: true
 build_script:
@@ -7,5 +15,3 @@ build_script:
 artifacts:
 - path: '**\Maybe*.nupkg'
   name: nuget-push
-on_success:
-- cmd: nuget pack Maybe\Maybe.nuspec
