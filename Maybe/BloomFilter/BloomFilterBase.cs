@@ -28,6 +28,13 @@ namespace Maybe.BloomFilter
         public abstract bool Contains(T item);
 
         /// <summary>
+        /// Adds an item to the bloom filter and returns if it might already be contained before
+        /// </summary>
+        /// <param name="item">The item which should be added and searched in the bloom filter</param>
+        /// <returns>False if the item was NOT in the bloom filter before. True if the item MIGHT have been in the bloom filter.</returns>
+        public abstract bool AddAndCheck(T item);
+
+        /// <summary>
         /// Represents the ratio of positions that are set in the bloom filter to the total number of positions
         /// </summary>
         public abstract double FillRatio { get; }
