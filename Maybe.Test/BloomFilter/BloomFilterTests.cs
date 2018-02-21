@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Maybe.BloomFilter;
 using Xunit;
 
@@ -51,6 +54,22 @@ namespace Maybe.Test.BloomFilter
             var filter = new MyTestBloomFilter<int>(250, 3);
             filter.Add(42);
             Assert.Equal(3d/250d, filter.FillRatio);
+        }
+
+        [Fact]
+        public void Contains_WhenItemHasBeenAdded_AndFilterHasBeenSerializedAndUnserialized_ShouldReturnTrue()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var filterOld = BloomFilter<int>.Create(50, 0.02);
+                filterOld.Add(42);
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, filterOld);
+                stream.Flush();
+                stream.Position = 0;
+                BloomFilter<int> filterNew = (BloomFilter<int>)formatter.Deserialize(stream);
+                Assert.True(filterNew.Contains(42));
+            }
         }
 
         private class MyTestBloomFilter<T> : BloomFilter<T>

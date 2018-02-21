@@ -7,6 +7,7 @@ namespace Maybe.BloomFilter
     /// A bloom filter modified to store counters and allow elements to be removed from the collection.
     /// </summary>
     /// <typeparam name="T">The type of item to be stored in the collection</typeparam>
+    [Serializable]
     public class CountingBloomFilter<T> : BloomFilterBase<T>
     {
         private readonly byte[] _collectionState;

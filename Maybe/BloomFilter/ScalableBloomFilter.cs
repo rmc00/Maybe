@@ -7,6 +7,7 @@ namespace Maybe.BloomFilter
     /// <summary>
     /// Represents a composite bloom filter, which will create many internal bloom filters to hold more values without increasing expected error rate.
     /// </summary>
+    [Serializable]
     public class ScalableBloomFilter<T> : IBloomFilter<T>
     {
         public const int MinimumCapacity = 50;

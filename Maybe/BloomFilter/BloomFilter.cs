@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Maybe.BloomFilter
 {
+    [Serializable]
     public class BloomFilter<T> : BloomFilterBase<T>
     {
         private readonly BitArray _collectionState;
