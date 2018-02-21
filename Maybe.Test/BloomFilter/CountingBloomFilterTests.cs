@@ -77,7 +77,7 @@ namespace Maybe.Test.BloomFilter
             Assert.Equal(3d / 250d, filter.FillRatio);
         }
 
-		[Fact]
+        [Fact]
         public void Add_WithCounterAtMaxValue_ShouldRemainConstant()
         {
             var filter = CountingBloomFilter<int>.Create(50, 0.01);
@@ -89,6 +89,21 @@ namespace Maybe.Test.BloomFilter
             Assert.True(filter.Contains(42));
         }
 
+        [Fact]
+        public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
+        {
+            var filter = CountingBloomFilter<int>.Create(50, 0.02);
+            filter.Add(42);
+            Assert.True(filter.AddAndCheck(42));
+        }
+
+        [Fact]
+        public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
+        {
+            var filter = CountingBloomFilter<int>.Create(50, 0.02);
+            Assert.False(filter.AddAndCheck(42));
+        }
+
         private class MyTestBloomFilter<T> : CountingBloomFilter<T>
         {
             public MyTestBloomFilter(int bitArraySize, int numHashes)
@@ -98,4 +113,4 @@ namespace Maybe.Test.BloomFilter
             }
         }
     }
-    }
+}

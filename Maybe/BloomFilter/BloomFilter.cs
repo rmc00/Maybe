@@ -39,6 +39,22 @@ namespace Maybe.BloomFilter
         public override void Add(T item) => DoHashAction(item, hash => _collectionState[hash] = true);
 
         /// <summary>
+        /// Adds an item to the bloom filter and returns if it might already be contained before
+        /// </summary>
+        /// <param name="item">The item which should be added and searched in the bloom filter</param>
+        /// <returns>False if the item was NOT in the bloom filter before. True if the item MIGHT have been in the bloom filter.</returns>
+        public override bool AddAndCheck(T item)
+        {
+            var containsItem = true;
+            DoHashAction(item, hash =>
+            {
+                containsItem = containsItem && _collectionState[hash];
+                _collectionState[hash] = true;
+            });
+            return containsItem;
+        }
+
+        /// <summary>
         /// Checks if this bloom filter currently contains an item
         /// </summary>
         /// <param name="item">The item for which to search in the bloom filter</param>

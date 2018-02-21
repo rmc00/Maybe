@@ -64,6 +64,25 @@ namespace Maybe.BloomFilter
         }
 
         /// <summary>
+        /// Adds an item to the bloom filter and returns if it might already be contained before
+        /// </summary>
+        /// <param name="item">The item which should be added and searched in the bloom filter</param>
+        /// <returns>False if the item was NOT in the bloom filter before. True if the item MIGHT have been in the bloom filter.</returns>
+        public override bool AddAndCheck(T item)
+        {
+            var containsItem = true;
+            DoHashAction(item, hash =>
+            {
+                containsItem = containsItem && _collectionState[hash] > 0;
+                if (_collectionState[hash] < byte.MaxValue)
+                {
+                    _collectionState[hash]++;
+                }
+            });
+            return containsItem;
+        }
+
+        /// <summary>
         /// Removes an item from the counting bloom filter
         /// </summary>
         /// <param name="item">The item to remove</param>

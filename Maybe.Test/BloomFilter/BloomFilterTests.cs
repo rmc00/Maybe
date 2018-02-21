@@ -58,8 +58,23 @@ namespace Maybe.Test.BloomFilter
             public MyTestBloomFilter(int bitArraySize, int numHashes)
                 : base(bitArraySize, numHashes)
             {
-                
+
             }
+        }
+
+        [Fact]
+        public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
+        {
+            var filter = BloomFilter<int>.Create(50, 0.02);
+            filter.Add(42);
+            Assert.True(filter.AddAndCheck(42));
+        }
+
+        [Fact]
+        public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
+        {
+            var filter = BloomFilter<int>.Create(50, 0.02);
+            Assert.False(filter.AddAndCheck(42));
         }
     }
 }
