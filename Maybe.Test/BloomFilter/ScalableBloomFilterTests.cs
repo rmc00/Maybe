@@ -1,4 +1,7 @@
 ﻿using Maybe.BloomFilter;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Xunit;
 
 namespace Maybe.Test.BloomFilter
@@ -29,6 +32,22 @@ namespace Maybe.Test.BloomFilter
                 filter.Add(i);
             }
             Assert.Equal(2, filter.NumberFilters);
+        }
+
+        [Fact]
+        public void Contains_WhenItemHasBeenAdded_AndFilterHasBeenSerializedAndUnserialized_ShouldReturnTrue()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var filterOld = new ScalableBloomFilter<int>(0.02);
+                filterOld.Add(42);
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, filterOld);
+                stream.Flush();
+                stream.Position = 0;
+                ScalableBloomFilter<int> filterNew = (ScalableBloomFilter<int>)formatter.Deserialize(stream);
+                Assert.True(filterNew.Contains(42));
+            }
         }
     }
 }

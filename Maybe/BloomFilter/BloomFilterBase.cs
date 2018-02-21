@@ -3,6 +3,7 @@ using Maybe.Utilities;
 
 namespace Maybe.BloomFilter
 {
+    [Serializable]
     public abstract class BloomFilterBase<T> : IBloomFilter<T>
     {
         protected int NumberHashes;
