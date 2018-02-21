@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Maybe.SkipList;
 using Xunit;
 
@@ -21,6 +23,27 @@ namespace Maybe.Test.SkipList
             var list = new SkipList<int>();
             list.AddRange(new[] { 42, 27, 33});
             Assert.Equal(3, list.Count());
+        }
+
+        [Fact]
+        public void Deserialize_WithValues_ShouldCreateNewListWithSameValues()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var list = new SkipList<int>();
+                list.AddRange(new[] { 42, 27, 33 });
+
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, list);
+                stream.Flush();
+                stream.Position = 0;
+                var newList = (SkipList<int>) formatter.Deserialize(stream);
+
+                Assert.True(newList.Contains(42));
+                Assert.True(newList.Contains(27));
+                Assert.True(newList.Contains(33));
+                Assert.Equal(list.Count(), newList.Count());
+            }
         }
 
         [Fact]

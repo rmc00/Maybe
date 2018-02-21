@@ -1,5 +1,8 @@
-﻿namespace Maybe.CountMinSketch
+﻿using System;
+
+namespace Maybe.CountMinSketch
 {
+    [Serializable]
     public abstract class CountMinSketchBase<T>
     {
         /// <summary>

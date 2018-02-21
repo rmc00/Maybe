@@ -4,6 +4,7 @@ using Maybe.Utilities;
 
 namespace Maybe.CountMinSketch
 {
+    [Serializable]
     public class CountMinSketch<T> : CountMinSketchBase<T>
     {
         private readonly int _depth;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Maybe.SkipList;
 using Xunit;
 
@@ -55,6 +57,27 @@ namespace Maybe.Test.SkipList
             var node = new Node<int>(42, 2);
             node.Next[1] = new Node<int>(46, 1);
             Assert.True(node.HasNextAtLevel(1));
+        }
+
+        [Fact]
+        public void Deserialize_WithValueAndLevels_ShouldBeSameAfterDeserialization()
+        {
+            using (var stream = new MemoryStream())
+            {
+                const int level = 3;
+                const int value = 42;
+                var node = new Node<int>(value, level);
+
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, node);
+                stream.Flush();
+                stream.Position = 0;
+
+                var newNode = (Node<int>)formatter.Deserialize(stream);
+
+                Assert.Equal(value, newNode.Value);
+                Assert.Equal(level, newNode.Next.Length);
+            }
         }
     }
 }

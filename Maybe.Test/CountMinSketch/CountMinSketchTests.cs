@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Maybe.CountMinSketch;
 using Xunit;
 
-namespace Maybe.Tests.CountMinSketch
+namespace Maybe.Test.CountMinSketch
 {
     public class CountMinSketchTests
     {
@@ -40,6 +43,27 @@ namespace Maybe.Tests.CountMinSketch
             }
             var estimate = sketch.EstimateCount(input);
             Assert.InRange(estimate, 1000, 1050);
+        }
+
+        [Fact]
+        public void EstimateCount_ShouldBeWithinConfidenceInterval_ForDeserializedSketch()
+        {
+            using (var stream = new MemoryStream())
+            {
+                const string input = "Testing!!";
+                var originalSketch = new CountMinSketch<string>(5d, 0.95, 42);
+                for (var i = 0; i < 1000; i++)
+                {
+                    originalSketch.Add(input);
+                }
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, originalSketch);
+                stream.Flush();
+                stream.Position = 0;
+                var newSketch = (CountMinSketch<string>) formatter.Deserialize(stream);
+                var estimate = newSketch.EstimateCount(input);
+                Assert.InRange(estimate, 1000, 1050);
+            }
         }
 
         [Fact]

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace Maybe.SkipList
 {
@@ -9,7 +10,8 @@ namespace Maybe.SkipList
     /// A sorted collection which allows for fast search by creating hierarchies of links between nodes
     /// </summary>
     /// <typeparam name="T">The type to be contained in the <see cref="SkipList{T}"/></typeparam>
-    public class SkipList<T> : IEnumerable<T>
+    [Serializable]
+    public class SkipList<T> : IEnumerable<T>, ISerializable
     {
         private readonly Node<T> _headNode = new Node<T>(default(T), 33); // The max. number of levels is 33
         private readonly Random _randomGenerator = new Random();
@@ -26,6 +28,13 @@ namespace Maybe.SkipList
             {
                 _comparer = comparer;
             }
+        }
+
+        protected SkipList(SerializationInfo info, StreamingContext context)
+        {
+            _headNode = (Node<T>) info.GetValue("headNode", typeof(Node<T>));
+            _levels = info.GetInt32("levels");
+            _comparer = (IComparer<T>)info.GetValue("comparer", typeof(IComparer<T>));
         }
 
         /// <summary>
@@ -145,6 +154,13 @@ namespace Maybe.SkipList
             {
                 yield return currentNode.Value;
             }
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("headNode", _headNode);
+            info.AddValue("levels", _levels);
+            info.AddValue("comparer", _comparer);
         }
     }
 }
