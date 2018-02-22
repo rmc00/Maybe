@@ -2,6 +2,10 @@
 
 namespace Maybe.CountMinSketch
 {
+    /// <summary>
+    /// An abstract class representing a general Count-Min Sketch data structure.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public abstract class CountMinSketchBase<T>
     {

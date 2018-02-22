@@ -3,11 +3,24 @@ using Maybe.Utilities;
 
 namespace Maybe.BloomFilter
 {
+    /// <summary>
+    /// Base class for bloom filter to contain some common member variables and hashing helper functions.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public abstract class BloomFilterBase<T> : IBloomFilter<T>
     {
+        /// <summary>
+        /// The number of times an item should be hashed when being added to or checked for membership in the collection
+        /// </summary>
         protected int NumberHashes;
         private readonly int _collectionLength;
+
+        /// <summary>
+        /// Protected constructor to create a new bloom filter
+        /// </summary>
+        /// <param name="bitArraySize">The number of bits that should be used internally to store items.</param>
+        /// <param name="numberHashes">The number of times an input should be hashed before working against the internal bit array.</param>
         protected BloomFilterBase(int bitArraySize, int numberHashes)
         {
             NumberHashes = numberHashes;
@@ -39,6 +52,11 @@ namespace Maybe.BloomFilter
         /// </summary>
         public abstract double FillRatio { get; }
 
+        /// <summary>
+        /// Hashes the <paramref name="item"/> provided and passes the hashed result to an action for processing (typically setting bits in the bit array or checking if those bits are set)
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="hashAction"></param>
         protected void DoHashAction(T item, Action<int> hashAction)
         {
             var hashes = MurmurHash3.GetHashes(item, NumberHashes, _collectionLength);

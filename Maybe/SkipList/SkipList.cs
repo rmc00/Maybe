@@ -30,6 +30,11 @@ namespace Maybe.SkipList
             }
         }
 
+        /// <summary>
+        /// Protected constructor used to deserialize an instance of <see cref="SkipList{T}"/>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected SkipList(SerializationInfo info, StreamingContext context)
         {
             _headNode = (Node<T>) info.GetValue("headNode", typeof(Node<T>));
@@ -141,6 +146,10 @@ namespace Maybe.SkipList
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Enumerates all nodes of this collection
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             var currentNode = _headNode.Next[0];
@@ -156,6 +165,11 @@ namespace Maybe.SkipList
             }
         }
 
+        /// <summary>
+        /// Helper method for serialization of this class."/>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("headNode", _headNode);

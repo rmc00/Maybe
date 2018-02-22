@@ -2,8 +2,16 @@
 
 namespace Maybe.Utilities
 {
+    /// <summary>
+    /// Helper class to abstract serializing objects to bytes.
+    /// </summary>
     public static class ByteConverter
     {
+        /// <summary>
+        /// Given a serializable object, returns the binary serialized representation of that object.
+        /// </summary>
+        /// <param name="item">The input to be serialized</param>
+        /// <returns>Binary serialized representation of the input item.</returns>
         public static byte[] ConvertToByteArray(object item)
         {
             if (item == null)

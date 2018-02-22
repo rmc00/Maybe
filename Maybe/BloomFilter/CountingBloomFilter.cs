@@ -12,6 +12,11 @@ namespace Maybe.BloomFilter
     {
         private readonly byte[] _collectionState;
 
+        /// <summary>
+        /// Creates a new counting bloom filter -- a bloom filter capable of tracking how many times a bit has been set
+        /// </summary>
+        /// <param name="arraySize">Size of the internal bit array to track items</param>
+        /// <param name="numHashes">Number of times the input should be hashed before working with the bit array.</param>
         protected CountingBloomFilter(int arraySize, int numHashes) : base(arraySize, numHashes)
         {
             _collectionState = new byte[arraySize];
@@ -21,12 +26,14 @@ namespace Maybe.BloomFilter
             }
         }
 
+        /// <summary>
+        /// Gets the ratio of how many bits in the bloom filter are set to the total number of bits. When this ratio is too high, the chance for error increases.
+        /// </summary>
         public override double FillRatio => _collectionState.Count(position => position > 0) / (double)_collectionState.Length;
 
         /// <summary>
         /// Creates a new counting bloom filter with appropriate bit width and hash functions for your expected size and error rate.
         /// </summary>
-        /// <typeparam name="T">The type of item to be held in the counting bloom filter</typeparam>
         /// <param name="expectedItems">The maximum number of items you expect to be in the counting bloom filter</param>
         /// <param name="acceptableErrorRate">The maximum rate of false positives you can accept. Must be a value between 0.00-1.00</param>
         /// <returns>A new bloom filter configured appropriately for number of items and error rate</returns>

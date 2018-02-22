@@ -1,5 +1,9 @@
 ﻿namespace Maybe.BloomFilter
 {
+    /// <summary>
+    /// Generic bloom filter interface to describe basic operations for any type of bloom filter.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IBloomFilter<T>
     {
         /// <summary>

@@ -4,22 +4,33 @@ using System.Linq;
 
 namespace Maybe.BloomFilter
 {
+    /// <summary>
+    /// Basic bloom filter collection
+    /// </summary>
+    /// <typeparam name="T">Type of data that will be contained in the bloom filter.</typeparam>
     [Serializable]
     public class BloomFilter<T> : BloomFilterBase<T>
     {
         private readonly BitArray _collectionState;
 
+        /// <summary>
+        /// Protected constructor -- use BloomFilter.Create instead of this.
+        /// </summary>
+        /// <param name="bitArraySize"></param>
+        /// <param name="numHashes"></param>
         protected BloomFilter(int bitArraySize, int numHashes) : base(bitArraySize, numHashes)
         {
             _collectionState = new BitArray(bitArraySize, false);
         }
 
+        /// <summary>
+        /// Gets the ratio of how many bits in the bloom filter are set to the total number of bits. When this ratio is too high, the chance for error increases.
+        /// </summary>
         public override double FillRatio => _collectionState.Cast<bool>().Count(bit => bit) / (double)_collectionState.Length;
 
         /// <summary>
         /// Creates a new bloom filter with appropriate bit width and hash functions for your expected size and error rate.
         /// </summary>
-        /// <typeparam name="T">The type of item to be held in the bloom filter</typeparam>
         /// <param name="expectedItems">The maximum number of items you expect to be in the bloom filter</param>
         /// <param name="acceptableErrorRate">The maximum rate of false positives you can accept. Must be a value between 0.00-1.00</param>
         /// <returns>A new bloom filter configured appropriately for number of items and error rate</returns>

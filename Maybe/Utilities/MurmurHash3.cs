@@ -9,7 +9,7 @@ namespace Maybe.Utilities
         private static readonly uint Seed = (uint)DateTime.Now.Ticks;
 
         /// <summary>
-        /// Uses Dillinger & Manolios algorithm to calculate many hashes from 2 main hash functions (built-in .NET hash and Murmur3)
+        /// Uses Dillinger and Manolios algorithm to calculate many hashes from 2 main hash functions (built-in .NET hash and Murmur3)
         /// </summary>
         /// <param name="item">Item to hash</param>
         /// <param name="numHashes">Desired number of hashes to computer</param>

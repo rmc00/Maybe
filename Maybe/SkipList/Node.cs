@@ -2,12 +2,28 @@
 
 namespace Maybe.SkipList
 {
+    /// <summary>
+    /// Represents a single node on a SkipList -- Contains a value and a set of follow up nodes at various levels.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public class Node<T>
     {
+        /// <summary>
+        /// Nodes that follow this current node at a given level (where the array index is the level)
+        /// </summary>
         public Node<T>[] Next { get; }
+
+        /// <summary>
+        /// The value of this node.
+        /// </summary>
         public T Value { get; }
 
+        /// <summary>
+        /// Creates a new instance of this node.
+        /// </summary>
+        /// <param name="value">The value of the node.</param>
+        /// <param name="level">The level where the node is stored in the <see cref="SkipList{T}"/> tree</param>
         public Node(T value, int level)
         {
             if(level < 0) { throw new ArgumentException("Level must be >= 0!", nameof(level)); }
