@@ -31,7 +31,7 @@ Task("Run-Tests")
         OldStyle = true,
         MergeOutput = true
     }
-    .WithFilter("+[*]* -[*.Tests*]*");
+    .WithFilter("+[*]Maybe* -[*]Maybe.Test*");
 
     var project = "Maybe.Test\\Maybe.Test.csproj";
     try 
