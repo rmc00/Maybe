@@ -14,7 +14,28 @@ namespace Maybe.BloomFilter
         /// The number of times an item should be hashed when being added to or checked for membership in the collection
         /// </summary>
         protected int NumberHashes;
-        private readonly int _collectionLength;
+
+        /// <summary>
+        /// Number of buckets for storing hash info (bits or ints)
+        /// </summary>
+        protected readonly int CollectionLength;
+
+        /// <summary>
+        /// Creates a new bloom filter with appropriate bit width and hash functions for your expected size and error rate.
+        /// </summary>
+        /// <param name="expectedItems">The maximum number of items you expect to be in the bloom filter</param>
+        /// <param name="acceptableErrorRate">The maximum rate of false positives you can accept. Must be a value between 0.00-1.00</param>
+        /// <returns>A new bloom filter configured appropriately for number of items and error rate</returns>
+        protected BloomFilterBase(int expectedItems, double acceptableErrorRate)
+        {
+            if (expectedItems <= 0) { throw new ArgumentException("Expected items must be at least 1.", nameof(expectedItems)); }
+            if (acceptableErrorRate < 0 || acceptableErrorRate > 1) { throw new ArgumentException("Acceptable error rate must be between 0 and 1.", nameof(acceptableErrorRate)); }
+
+            var bitWidth = (int)Math.Ceiling(expectedItems * Math.Log(acceptableErrorRate) / Math.Log(1.0 / Math.Pow(2.0, Math.Log(2.0)))) * 2;
+            var numHashes = (int)Math.Round(Math.Log(2.0) * bitWidth / expectedItems) * 2;
+            NumberHashes = numHashes;
+            CollectionLength = bitWidth;
+        }
 
         /// <summary>
         /// Protected constructor to create a new bloom filter
@@ -24,7 +45,7 @@ namespace Maybe.BloomFilter
         protected BloomFilterBase(int bitArraySize, int numberHashes)
         {
             NumberHashes = numberHashes;
-            _collectionLength = bitArraySize;
+            CollectionLength = bitArraySize;
         }
 
         /// <summary>
@@ -59,7 +80,7 @@ namespace Maybe.BloomFilter
         /// <param name="hashAction"></param>
         protected void DoHashAction(T item, Action<int> hashAction)
         {
-            var hashes = MurmurHash3.GetHashes(item, NumberHashes, _collectionLength);
+            var hashes = MurmurHash3.GetHashes(item, NumberHashes, CollectionLength);
             foreach (var hash in hashes)
             {
                 hashAction(hash);

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -12,7 +13,7 @@ namespace Maybe.Test.BloomFilter
         [Fact]
         public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
-            var filter = BloomFilter<int>.Create(50, 0.02);
+            var filter = new BloomFilter<int>(50, 0.02);
             filter.Add(42);
             Assert.True(filter.Contains(42));
         }
@@ -20,7 +21,7 @@ namespace Maybe.Test.BloomFilter
         [Fact]
         public void Contains_WithFreshFilter_ShouldReturnFalse()
         {
-            var filter = BloomFilter<int>.Create(50, 0.02);
+            var filter = new BloomFilter<int>(50, 0.02);
             Assert.False(filter.Contains(42));
         }
 
@@ -30,7 +31,7 @@ namespace Maybe.Test.BloomFilter
         [InlineData(10000, 0.05d)]
         public void Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors(int stepRange, double errorRate)
         {
-            var filter = BloomFilter<int>.Create(stepRange, errorRate);
+            var filter = new BloomFilter<int>(stepRange, errorRate);
             foreach (var num in Enumerable.Range(1, stepRange))
             {
                 filter.Add(num);
@@ -44,7 +45,7 @@ namespace Maybe.Test.BloomFilter
         [Fact]
         public void FillRatio_WithNewFilter_ShouldBeZero()
         {
-            var filter = BloomFilter<int>.Create(1000, 0.05);
+            var filter = new BloomFilter<int>(1000, 0.05);
             Assert.Equal(0d, filter.FillRatio);
         }
 
@@ -61,7 +62,7 @@ namespace Maybe.Test.BloomFilter
         {
             using (var stream = new MemoryStream())
             {
-                var filterOld = BloomFilter<int>.Create(50, 0.02);
+                var filterOld = new BloomFilter<int>(50, 0.02);
                 filterOld.Add(42);
                 IFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, filterOld);
@@ -84,7 +85,7 @@ namespace Maybe.Test.BloomFilter
         [Fact]
         public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
         {
-            var filter = BloomFilter<int>.Create(50, 0.02);
+            var filter = new BloomFilter<int>(50, 0.02);
             filter.Add(42);
             Assert.True(filter.AddAndCheck(42));
         }
@@ -92,8 +93,63 @@ namespace Maybe.Test.BloomFilter
         [Fact]
         public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
         {
-            var filter = BloomFilter<int>.Create(50, 0.02);
+            var filter = new BloomFilter<int>(50, 0.02);
             Assert.False(filter.AddAndCheck(42));
+        }
+
+        [Fact]
+        public void Create_WithZeroExpectedSize_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => BloomFilter<int>.Create(0, 0.5));
+        }
+
+        [Fact]
+        public void Create_WithNegativeExpectedSize_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => BloomFilter<int>.Create(-100, 0.5));
+        }
+
+        [Fact]
+        public void Create_WithErrorRateLessThanZero_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => BloomFilter<int>.Create(100, -5));
+        }
+
+        [Fact]
+        public void Create_WithErrorRateGreaterThanOne_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => BloomFilter<int>.Create(100, 5));
+        }
+
+        [Fact]
+        public void Create_WithValidParameters_ShouldReturnBloomFilter()
+        {
+            var filter = BloomFilter<int>.Create(50, 0.03);
+            Assert.NotNull(filter);
+        }
+
+        [Fact]
+        public void Constructor_WithZeroExpectedSize_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new BloomFilter<int>(0, 0.5d));
+        }
+
+        [Fact]
+        public void Constructor_WithNegativeExpectedSize_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new BloomFilter<int>(-100, 0.5d));
+        }
+
+        [Fact]
+        public void Constructor_WithErrorRateLessThanZero_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new BloomFilter<int>(100, -5d));
+        }
+
+        [Fact]
+        public void Constructor_WithErrorRateGreaterThanOne_ShouldThrowArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new BloomFilter<int>(100, 5d));
         }
     }
 }

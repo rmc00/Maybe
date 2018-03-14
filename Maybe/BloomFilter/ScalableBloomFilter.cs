@@ -60,7 +60,7 @@ namespace Maybe.BloomFilter
         private static IEnumerable<BloomFilterBase<T>> AddNewFilter(double maxError, int capacity, IEnumerable<BloomFilterBase<T>> currentFilters)
         {
             var filters = (currentFilters ?? new List<BloomFilterBase<T>>()).ToList();
-            filters.Add(BloomFilter<T>.Create(capacity, maxError));
+            filters.Add(new BloomFilter<T>(capacity, maxError));
             return filters;
         }
     }

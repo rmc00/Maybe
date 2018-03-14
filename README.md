@@ -14,10 +14,10 @@ Installation is super simple with NuGet! Just use this command to install from t
 Maybe.NET has a clear, intuitive API that is easy to pick up. You can check out the Maybe.Tests project for examples of using each method. Here are some quick examples to get you started.
 
 ### Bloom Filter Usage
-The bloom filter is a handy collection to which you can add items and check if an item is contained in the collection. They are very fast and memory-efficient, but it comes at a small cost: the filter can definitely say if an item is *NOT* in the collection, but it can't say for sure that an item is in the collection, only that it *MIGHT* be. You can use the constructor to specify your targetted maximum rate of errors. (Lower error rates may use more memory)
+The bloom filter is a handy collection to which you can add items and check if an item is contained in the collection. They are very fast and memory-efficient, but it comes at a small cost: the filter can definitely say if an item is *NOT* in the collection, but it can't say for sure that an item is in the collection, only that it *MIGHT* be. You can use the constructor to specify your targeted maximum rate of errors. (Lower error rates may use more memory)
 
 ```
-var filter = BloomFilter<int>.Create(50, 0.02);
+var filter = new BloomFilter<int>(50, 0.02);
 filter.Add(42);
 filter.Add(27);
 filter.Add(33);
@@ -30,7 +30,7 @@ filter.Contains(27); // returns true (the item MIGHT be in the collection)
 Counting bloom filters extend regular bloom filter functionality by allowing items to be removed from the collection. This can be useful functionality, but it opens the possibility of false negatives.
 
 ```
-var filter = CountingBloomFilter<int>.Create(50, 0.02);
+var filter = new CountingBloomFilter<int>(50, 0.02);
 filter.Add(42);
 filter.Contains(42); // returns true
 filter.Remove(42);

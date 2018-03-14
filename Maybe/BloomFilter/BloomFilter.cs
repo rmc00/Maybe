@@ -13,14 +13,16 @@ namespace Maybe.BloomFilter
     {
         private readonly BitArray _collectionState;
 
-        /// <summary>
-        /// Protected constructor -- use BloomFilter.Create instead of this.
-        /// </summary>
-        /// <param name="bitArraySize"></param>
-        /// <param name="numHashes"></param>
+        /// <inheritdoc />
         protected BloomFilter(int bitArraySize, int numHashes) : base(bitArraySize, numHashes)
         {
             _collectionState = new BitArray(bitArraySize, false);
+        }
+
+        /// <inheritdoc />
+        public BloomFilter(int expectedItems, double acceptableErrorRate) : base(expectedItems, acceptableErrorRate)
+        {
+            _collectionState = new BitArray(CollectionLength, false);
         }
 
         /// <summary>
@@ -36,12 +38,7 @@ namespace Maybe.BloomFilter
         /// <returns>A new bloom filter configured appropriately for number of items and error rate</returns>
         public static BloomFilter<T> Create(int expectedItems, double acceptableErrorRate)
         {
-            if (expectedItems <= 0) { throw new ArgumentException("Expected items must be at least 1.", nameof(expectedItems)); }
-            if (acceptableErrorRate < 0 || acceptableErrorRate > 1) { throw new ArgumentException("Acceptable error rate must be between 0 and 1.", nameof(acceptableErrorRate)); }
-
-            var bitWidth = (int)Math.Ceiling(expectedItems * Math.Log(acceptableErrorRate) / Math.Log(1.0 / Math.Pow(2.0, Math.Log(2.0)))) * 2;
-            var numHashes = (int)Math.Round(Math.Log(2.0) * bitWidth / expectedItems) * 2;
-            return new BloomFilter<T>(bitWidth, numHashes);
+            return new BloomFilter<T>(expectedItems, acceptableErrorRate);
         }
 
         /// <summary>

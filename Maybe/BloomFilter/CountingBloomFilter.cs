@@ -26,9 +26,23 @@ namespace Maybe.BloomFilter
             }
         }
 
+
         /// <summary>
-        /// Gets the ratio of how many bits in the bloom filter are set to the total number of bits. When this ratio is too high, the chance for error increases.
+        /// Creates a new counting bloom filter
         /// </summary>
+        /// <param name="expectedItems">Expected number of items for the bloom filter to hold</param>
+        /// <param name="acceptableErrorRate">The maximum error rate for this counting bloom filter when items are below expected value</param>
+        public CountingBloomFilter(int expectedItems, double acceptableErrorRate) : base(expectedItems, acceptableErrorRate)
+        {
+            _collectionState = new byte[CollectionLength];
+            for (var i = 0; i < _collectionState.Length; i++)
+            {
+                _collectionState[i] = 0;
+            }
+        }
+
+
+        /// <inheritdoc />
         public override double FillRatio => _collectionState.Count(position => position > 0) / (double)_collectionState.Length;
 
         /// <summary>
@@ -39,12 +53,7 @@ namespace Maybe.BloomFilter
         /// <returns>A new bloom filter configured appropriately for number of items and error rate</returns>
         public static CountingBloomFilter<T> Create(int expectedItems, double acceptableErrorRate)
         {
-            if (expectedItems <= 0) { throw new ArgumentException("Expected items must be at least 1.", nameof(expectedItems)); }
-            if (acceptableErrorRate < 0 || acceptableErrorRate > 1) { throw new ArgumentException("Acceptable error rate must be between 0 and 1.", nameof(acceptableErrorRate)); }
-
-            var bitWidth = (int)Math.Ceiling(expectedItems * Math.Log(acceptableErrorRate) / Math.Log(1.0 / Math.Pow(2.0, Math.Log(2.0)))) * 2;
-            var numHashes = (int)Math.Round(Math.Log(2.0) * bitWidth / expectedItems) * 2;
-            return new CountingBloomFilter<T>(bitWidth, numHashes);
+            return new CountingBloomFilter<T>(expectedItems, acceptableErrorRate);
         }
 
         /// <summary>
