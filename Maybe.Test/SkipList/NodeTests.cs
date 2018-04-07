@@ -9,6 +9,7 @@ namespace Maybe.Test.SkipList
     public class NodeTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithValue_SetsValueProperty()
         {
             const int value = 42;
@@ -17,6 +18,7 @@ namespace Maybe.Test.SkipList
         }
         
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithLevel_ShouldSetupNodesToThatLevel()
         {
             const int level = 3;
@@ -25,12 +27,14 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithNegativeLevel_ShouldThrowArgumentException()
         {
             Assert.Throws<ArgumentException>(() => new Node<int>(42, -5));
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void HasNextAtLevel_WithNegativeLevel_ShouldThrowArgumentException()
         {
             var node = new Node<int>(42, 2);
@@ -38,6 +42,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void HasNextAtLevel_WithLevelGreaterThanNodeLevel_ShouldReturnFalse()
         {
             var node = new Node<int>(42, 1);
@@ -45,6 +50,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void HasNextAtLevel_WithNodeSetNull_ShouldReturnFalse()
         {
             var node = new Node<int>(42, 1);
@@ -52,6 +58,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void HasNextAtLevel_WithValidNodeAtIndex_ShouldReturnTrue()
         {
             var node = new Node<int>(42, 2);
@@ -60,6 +67,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Deserialize_WithValueAndLevels_ShouldBeSameAfterDeserialization()
         {
             using (var stream = new MemoryStream())

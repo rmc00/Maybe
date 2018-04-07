@@ -9,6 +9,7 @@ namespace Maybe.Test.BloomFilter
     public class ScalableBloomFilterTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
             var filter = new ScalableBloomFilter<int>(0.02);
@@ -17,6 +18,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WithFreshFilter_ShouldReturnFalse()
         {
             var filter = new ScalableBloomFilter<int>(0.02);
@@ -24,6 +26,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void NumberFilters_WithThreeTimesFirstCapacity_ShouldBeTwo()
         {
             var filter = new ScalableBloomFilter<int>(0.02);
@@ -35,6 +38,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WhenItemHasBeenAdded_AndFilterHasBeenSerializedAndUnserialized_ShouldReturnTrue()
         {
             using (var stream = new MemoryStream())

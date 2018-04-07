@@ -10,6 +10,8 @@ namespace Maybe.BloomFilter
     [Serializable]
     public abstract class BloomFilterBase<T> : IBloomFilter<T>
     {
+        private readonly MurmurHash3 _hasher = new MurmurHash3();
+
         /// <summary>
         /// The number of times an item should be hashed when being added to or checked for membership in the collection
         /// </summary>
@@ -80,7 +82,7 @@ namespace Maybe.BloomFilter
         /// <param name="hashAction"></param>
         protected void DoHashAction(T item, Action<int> hashAction)
         {
-            var hashes = MurmurHash3.GetHashes(item, NumberHashes, CollectionLength);
+            var hashes = _hasher.GetHashes(item, NumberHashes, CollectionLength);
             foreach (var hash in hashes)
             {
                 hashAction(hash);

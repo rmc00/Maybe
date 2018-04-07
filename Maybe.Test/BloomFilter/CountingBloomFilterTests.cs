@@ -10,6 +10,7 @@ namespace Maybe.Test.BloomFilter
     public class CountingBloomFilterTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
             var filter = new CountingBloomFilter<int>(50, 0.02);
@@ -18,6 +19,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WithFreshFilter_ShouldReturnFalse()
         {
             var filter = new CountingBloomFilter<int>(50, 0.02);
@@ -28,6 +30,7 @@ namespace Maybe.Test.BloomFilter
         [InlineData(100, 0.05d)]
         [InlineData(1000, 0.05d)]
         [InlineData(10000, 0.05d)]
+        [Trait("Category", "Unit")]
         public void Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors(int stepRange, double errorRate)
         {
             var filter = new CountingBloomFilter<int>(stepRange, errorRate);
@@ -42,6 +45,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WithItemNotInCollection_ShouldReturnFalse()
         {
             var filter = new CountingBloomFilter<int>(100, 0.2);
@@ -49,6 +53,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WithItemInCollection_ShouldReturnTrue()
         {
             var filter = new CountingBloomFilter<int>(100, 0.2);
@@ -57,6 +62,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WithItemInCollection_ShouldRemoveItemFromCollection()
         {
             var filter = new CountingBloomFilter<int>(100, 0.2);
@@ -66,6 +72,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void FillRatio_WithNewFilter_ShouldBeZero()
         {
             var filter = new CountingBloomFilter<int>(1000, 0.05);
@@ -73,6 +80,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void FillRatio_WithOneItem_ShouldBeNumHashesDividedByBitArraySize()
         {
             var filter = new MyTestBloomFilter<int>(250, 3);
@@ -81,6 +89,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Add_WithCounterAtMaxValue_ShouldRemainConstant()
         {
             var filter = new CountingBloomFilter<int>(50, 0.01);
@@ -93,6 +102,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
         {
             var filter = new CountingBloomFilter<int>(50, 0.02);
@@ -101,6 +111,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
         {
             var filter = new CountingBloomFilter<int>(50, 0.02);
@@ -108,6 +119,7 @@ namespace Maybe.Test.BloomFilter
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WhenItemHasBeenAdded_AndFilterHasBeenSerializedAndUnserialized_ShouldReturnTrue()
         {
             using (var stream = new MemoryStream())

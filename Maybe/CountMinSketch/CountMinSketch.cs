@@ -11,6 +11,7 @@ namespace Maybe.CountMinSketch
     [Serializable]
     public class CountMinSketch<T> : CountMinSketchBase<T>
     {
+        private readonly MurmurHash3 _hasher = new MurmurHash3();
         private readonly int _depth;
         private readonly int _width;
         private long[,] _table;
@@ -138,10 +139,10 @@ namespace Maybe.CountMinSketch
             return res;
         }
 
-        private static int[] GetHashBuckets(T item, int hashCount, int max)
+        private int[] GetHashBuckets(T item, int hashCount, int max)
         {
             var result = new int[hashCount];
-            var hashes = MurmurHash3.GetHashes(item, hashCount, max).ToList();
+            var hashes = _hasher.GetHashes(item, hashCount, max).ToList();
             for (var i = 0; i < hashCount; i++)
             {
                 result[i] = hashes[i];

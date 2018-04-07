@@ -8,6 +8,7 @@ namespace Maybe.Test.Utilities
     public class ByteConverterTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void ConvertToByteArray_WithNull_ShouldReturnNull()
         {
             var bytes = ByteConverter.ConvertToByteArray(null);
@@ -15,6 +16,7 @@ namespace Maybe.Test.Utilities
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void ConvertToByteArray_WithNonSerializableInput_ShouldThrowException()
         {
             var test = new DontSerializeMe();
@@ -22,6 +24,7 @@ namespace Maybe.Test.Utilities
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void ConvertToByteArray_WithSerializableInput_ShouldReturnBytes()
         {
             var test = new SerializeMe();

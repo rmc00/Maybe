@@ -10,6 +10,7 @@ namespace Maybe.Test.SkipList
     public class SkipListTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void Add_WithValue_ShouldInsertNewNode()
         {
             var list = new SkipList<int>();
@@ -18,6 +19,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void AddRange_WithValues_ShouldInsertNewNodeForEachValue()
         {
             var list = new SkipList<int>();
@@ -26,6 +28,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Deserialize_WithValues_ShouldCreateNewListWithSameValues()
         {
             using (var stream = new MemoryStream())
@@ -47,6 +50,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WithValueInList_ShouldReturnTrue()
         {
             var list = new SkipList<int> {42, 33};
@@ -54,6 +58,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Contains_WithValueNotInList_ShouldReturnFalse()
         {
             var list = new SkipList<int> { 42, 33 };
@@ -61,6 +66,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WhenValueFoundAndRemoved_ShouldReturnTrue()
         {
             var list = new SkipList<int> {42};
@@ -68,6 +74,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WhenValueNotFound_ShouldReturnFalse()
         {
             var list = new SkipList<int>();
@@ -75,6 +82,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Remove_WhenValueFound_ShouldDeleteValueFromList()
         {
             var list = new SkipList<int> {42};
@@ -83,6 +91,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void GetEnumerator_WithValues_ShouldReturnAllValuesAsIEnumerable()
         {
             var list = new SkipList<int> {42, 27, 39};
@@ -95,6 +104,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Enumeration_WithNoSpecifiedComparer_ShouldUseDefaultSortOrder()
         {
             var list = new SkipList<int>{42,27,33};
@@ -105,6 +115,7 @@ namespace Maybe.Test.SkipList
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Enumeration_WithSpecificComparer_ShouldUseCustomSortOrder()
         {
             var list = new SkipList<int>(new MyComparer()) {42,27,33};

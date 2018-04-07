@@ -4,9 +4,20 @@ using System.IO;
 
 namespace Maybe.Utilities
 {
+    [Serializable]
     internal class MurmurHash3
     {
-        private static readonly uint Seed = (uint)DateTime.Now.Ticks;
+        private readonly uint _seed;
+
+        public MurmurHash3()
+        {
+            _seed = (uint) DateTime.Now.Ticks;
+        }
+
+        public MurmurHash3(uint seed)
+        {
+            _seed = seed;
+        }
 
         /// <summary>
         /// Uses Dillinger and Manolios algorithm to calculate many hashes from 2 main hash functions (built-in .NET hash and Murmur3)
@@ -15,7 +26,7 @@ namespace Maybe.Utilities
         /// <param name="numHashes">Desired number of hashes to computer</param>
         /// <param name="maxHashValue">Maximum value that will be returned; modulus is used to limit results</param>
         /// <returns></returns>
-        public static IEnumerable<int> GetHashes(object item, int numHashes, int maxHashValue)
+        public IEnumerable<int> GetHashes(object item, int numHashes, int maxHashValue)
         {
             var primaryHash = item.GetHashCode();
             int secondaryHash;
@@ -35,12 +46,12 @@ namespace Maybe.Utilities
         /// </summary>
         /// <param name="stream">Stream of data to hash</param>
         /// <returns>Int hash</returns>
-        public static int Hash(Stream stream)
+        public int Hash(Stream stream)
         {
             const uint c1 = 0xcc9e2d51;
             const uint c2 = 0x1b873593;
 
-            var h1 = Seed;
+            var h1 = _seed;
             uint streamLength = 0;
             using (var reader = new BinaryReader(stream))
             {

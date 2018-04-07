@@ -10,21 +10,27 @@ namespace Maybe.Test.CountMinSketch
     public class CountMinSketchTests
     {
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithNegativeDepth_ShouldThrowArgumentException() => Assert.Throws<ArgumentException>(() => new CountMinSketch<int>(-2, 5, 42));
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithNegativeWidth_ShouldThrowArgumentException() => Assert.Throws<ArgumentException>(() => new CountMinSketch<int>(5, -5, 42));
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithNegativeEpsilon_ShouldThrowArgumentException() => Assert.Throws<ArgumentException>(() => new CountMinSketch<int>(-5d, 5d, 42));
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithNegativeConfidence_ShouldThrowArgumentException() => Assert.Throws<ArgumentException>(() => new CountMinSketch<int>(5d, -5d, 42));
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void Constructor_WithConfidenceOverOne_ShouldThrowArgumentException() => Assert.Throws<ArgumentException>(() => new CountMinSketch<int>(5d, 2, 42));
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TotalCount_ShouldIncrement_WhenItemIsAdded()
         {
             var sketch = new CountMinSketch<int>(5d, 0.95d, 42);
@@ -33,6 +39,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void EstimateCount_ShouldBeWithinConfidenceInterval_ForItemThatHasBeenAdded()
         {
             const string input = "Testing!!";
@@ -46,6 +53,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void EstimateCount_ShouldBeWithinConfidenceInterval_ForDeserializedSketch()
         {
             using (var stream = new MemoryStream())
@@ -67,6 +75,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void MergeInPlace_WithNullOther_ShouldThrowIncompatibleMergeException()
         {
             var sketch = new CountMinSketch<string>(5d, 0.95d, 42);
@@ -74,6 +83,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void MergeInPlace_WithDifferentDepths_ShouldThrowIncompatibleMergeException()
         {
             var sketch = new CountMinSketch<int>(20, 20, 42);
@@ -82,6 +92,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void MergeInPlace_WithDifferentWidths_ShouldThrowIncompatibleMergeException()
         {
             var sketch = new CountMinSketch<int>(20, 20, 42);
@@ -90,6 +101,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void MergeInPlace_WithDifferentSeeds_ShouldThrowIncompatibleMergeException()
         {
             var sketch = new CountMinSketch<int>(20, 20, 42);
@@ -98,6 +110,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void TotalCount_AfterMergeInPlace_ShouldBeSumOfMergedTotals()
         {
             var sketch = new CountMinSketch<int>(5d, 0.95d, 42);
@@ -113,6 +126,7 @@ namespace Maybe.Test.CountMinSketch
         }
 
         [Fact]
+        [Trait("Category", "Unit")]
         public void EstimateCount_AfterMergeInPlace_ShouldBeWithinConfidenceInterval()
         {
             const string input = "Testing!!";
