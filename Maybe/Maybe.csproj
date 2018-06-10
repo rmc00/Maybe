@@ -16,7 +16,7 @@
     <PackageIconUrl>https://github.com/rmc00/Maybe/raw/master/Maybe/assets/maybe-icon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/rmc00/Maybe.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>probabilistic data structure bloomfilter bloom filter netstandard15 skip list skiplist counting bloom filter scalable bloom filter count-min-sketch count min sketch</PackageTags>
+    <PackageTags>bloom filter count-min sketch skiplist probabilistic netstandard20</PackageTags>
     <PackageReleaseNotes>New support for count min sketch!</PackageReleaseNotes>
   </PropertyGroup>
 
