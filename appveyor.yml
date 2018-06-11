@@ -8,8 +8,6 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
-nuget:
-  account_feed: true
 build_script:
 - ps: .\build.ps1
 artifacts:
