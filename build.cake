@@ -1,7 +1,7 @@
 #addin Cake.Coveralls
 #tool coveralls.io
-#tool "nuget:https://www.nuget.org/api/v2?package=OpenCover&version=4.6.519"
-#tool "nuget:https://www.nuget.org/api/v2?package=ReportGenerator&version=2.4.5"
+#tool "nuget:https://www.nuget.org/api/v2?package=OpenCover"
+#tool "nuget:https://www.nuget.org/api/v2?package=ReportGenerator"
 
 var target = Argument("target", "Run-Tests");
 

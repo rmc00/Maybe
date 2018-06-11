@@ -11,7 +11,7 @@ dotnet_csproj:
 nuget:
   account_feed: true
 build_script:
-- ps: .\build.ps1 --settings_skipverification=true
+- ps: .\build.ps1
 artifacts:
 - path: '**\Maybe*.nupkg'
   name: nuget-push
