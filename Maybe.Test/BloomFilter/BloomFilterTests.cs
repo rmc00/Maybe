@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using FsCheck;
+using FsCheck.Xunit;
 using Maybe.BloomFilter;
 using Xunit;
 
@@ -10,39 +12,44 @@ namespace Maybe.Test.BloomFilter
 {
     public class BloomFilterTests
     {
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
-            var filter = new BloomFilter<int>(50, 0.02);
-            filter.Add(42);
-            Assert.True(filter.Contains(42));
-        }
-
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Contains_WithFreshFilter_ShouldReturnFalse()
-        {
-            var filter = new BloomFilter<int>(50, 0.02);
-            Assert.False(filter.Contains(42));
-        }
-
-        [Theory]
-        [InlineData(100, 0.05d)]
-        [InlineData(1000, 0.05d)]
-        [InlineData(10000, 0.05d)]
-        [Trait("Category", "Unit")]
-        public void Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors(int stepRange, double errorRate)
-        {
-            var filter = new BloomFilter<int>(stepRange, errorRate);
-            foreach (var num in Enumerable.Range(1, stepRange))
+            return Prop.ForAll(Arb.Default.Int32(), item =>
             {
-                filter.Add(num);
-            }
+                var filter = new BloomFilter<int>(50, 0.02);
+                filter.Add(item);
+                return filter.Contains(item).ToProperty();
+            });
+        }
 
-            var errorCount = Enumerable.Range(stepRange + 1, stepRange * 2).Count(num => filter.Contains(num));
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_WithFreshFilter_ShouldReturnFalse()
+        {
+            return Prop.ForAll(Arb.Default.Int32(), item =>
+            {
+                var filter = new BloomFilter<int>(50, 0.02);
+                Assert.False(filter.Contains(item));
+            });
+        }
 
-            Assert.InRange(errorCount, 0d, errorRate * stepRange);
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors()
+        {
+            return Prop.ForAll(Arb.From(Gen.Choose(1, 10000)), Arb.From(Gen.Choose(1, 99)), (stepRange, errorRate) =>
+            {
+                var filter = new BloomFilter<int>(stepRange, errorRate/100d);
+                foreach (var num in Enumerable.Range(1, stepRange))
+                {
+                    filter.Add(num);
+                }
+                var errorCount = Enumerable.Range(stepRange + 1, stepRange * 2).Count(num => filter.Contains(num));
+                var highError = errorRate * stepRange;
+                (0 <= errorCount && errorCount <= highError).ToProperty();
+            });
         }
 
         [Fact]
