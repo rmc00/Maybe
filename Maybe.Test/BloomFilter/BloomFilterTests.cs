@@ -60,13 +60,16 @@ namespace Maybe.Test.BloomFilter
             Assert.Equal(0d, filter.FillRatio);
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void FillRatio_WithOneItem_ShouldBeNumHashesDividedByBitArraySize()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property FillRatio_WithOneItem_ShouldBeNumHashesDevidedByBitArraySize_Prop()
         {
-            var filter = new MyTestBloomFilter<int>(250, 3);
-            filter.Add(42);
-            Assert.Equal(3d/250d, filter.FillRatio);
+            return Prop.ForAll(Arb.From(Gen.Choose(1, 10000)), Arb.From(Gen.Choose(1, 99)), (bitArraySize, numHashes) =>
+            {
+                var filter = new MyTestBloomFilter<int>(bitArraySize, numHashes);
+                filter.Add(42);
+                (numHashes/(double)bitArraySize == filter.FillRatio).ToProperty();
+            });
         }
 
         [Fact]
