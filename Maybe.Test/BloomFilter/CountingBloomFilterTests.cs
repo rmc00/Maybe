@@ -38,7 +38,7 @@ namespace Maybe.Test.BloomFilter
         [Trait("Category", "Property")]
         public Property Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors()
         {
-            return Prop.ForAll(Arb.From(Gen.Choose(1, 10000)), Arb.From(Gen.Choose(1, 99)), (stepRange, errorRate) =>
+            return Prop.ForAll(Arb.From(Gen.Choose(1, 5000)), Arb.From(Gen.Choose(1, 99)), (stepRange, errorRate) =>
             {
                 var filter = new CountingBloomFilter<int>(stepRange, errorRate/100d);
                 foreach (var num in Enumerable.Range(1, stepRange))
