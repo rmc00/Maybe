@@ -98,21 +98,27 @@ namespace Maybe.Test.BloomFilter
             }
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
         {
-            var filter = new BloomFilter<int>(50, 0.02);
-            filter.Add(42);
-            Assert.True(filter.AddAndCheck(42));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new BloomFilter<int>(50, 0.02);
+                filter.Add(testData);
+                return filter.AddAndCheck(testData).ToProperty();
+            });
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
         {
-            var filter = new BloomFilter<int>(50, 0.02);
-            Assert.False(filter.AddAndCheck(42));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new BloomFilter<int>(50, 0.02);
+                return (!filter.AddAndCheck(testData)).ToProperty();
+            });
         }
 
         [Fact]
