@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using FsCheck;
+using FsCheck.Xunit;
 using Maybe.BloomFilter;
 using Xunit;
 
@@ -9,66 +11,80 @@ namespace Maybe.Test.BloomFilter
 {
     public class CountingBloomFilterTests
     {
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_WhenItemHasBeenAdded_ShouldReturnTrue()
         {
-            var filter = new CountingBloomFilter<int>(50, 0.02);
-            filter.Add(42);
-            Assert.True(filter.Contains(42));
-        }
-
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Contains_WithFreshFilter_ShouldReturnFalse()
-        {
-            var filter = new CountingBloomFilter<int>(50, 0.02);
-            Assert.False(filter.Contains(42));
-        }
-
-        [Theory]
-        [InlineData(100, 0.05d)]
-        [InlineData(1000, 0.05d)]
-        [InlineData(10000, 0.05d)]
-        [Trait("Category", "Unit")]
-        public void Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors(int stepRange, double errorRate)
-        {
-            var filter = new CountingBloomFilter<int>(stepRange, errorRate);
-            foreach (var num in Enumerable.Range(1, stepRange))
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
             {
-                filter.Add(num);
-            }
-
-            var errorCount = Enumerable.Range(stepRange + 1, stepRange * 2).Count(num => filter.Contains(num));
-
-            Assert.InRange(errorCount, 0d, errorRate * stepRange);
+                var filter = new CountingBloomFilter<int>(50, 0.02);
+                filter.Add(testData);
+                return filter.Contains(testData).ToProperty();
+            });
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Remove_WithItemNotInCollection_ShouldReturnFalse()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_WithFreshFilter_ShouldReturnFalse()
         {
-            var filter = new CountingBloomFilter<int>(100, 0.2);
-            Assert.False(filter.Remove(27));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(50, 0.02);
+                return (!filter.Contains(testData)).ToProperty();
+            });
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void Remove_WithItemInCollection_ShouldReturnTrue()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Contains_With5PercentFalsePositives_ShouldHaveLessThan5PercentErrors()
         {
-            var filter = new CountingBloomFilter<int>(100, 0.2);
-            filter.Add(27);
-            Assert.True(filter.Remove(27));
+            return Prop.ForAll(Arb.From(Gen.Choose(1, 10000)), Arb.From(Gen.Choose(1, 99)), (stepRange, errorRate) =>
+            {
+                var filter = new CountingBloomFilter<int>(stepRange, errorRate/100d);
+                foreach (var num in Enumerable.Range(1, stepRange))
+                {
+                    filter.Add(num);
+                }
+                var errorCount = Enumerable.Range(stepRange + 1, stepRange * 2).Count(num => filter.Contains(num));
+                var highError = errorRate * stepRange;
+                (0 <= errorCount && errorCount <= highError).ToProperty();
+            });
         }
 
-        [Fact]
+        [Property]
         [Trait("Category", "Unit")]
-        public void Remove_WithItemInCollection_ShouldRemoveItemFromCollection()
+        public Property Remove_WithItemNotInCollection_ShouldReturnFalse()
         {
-            var filter = new CountingBloomFilter<int>(100, 0.2);
-            filter.Add(27);
-            filter.Remove(27);
-            Assert.False(filter.Contains(27));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(100, 0.2);
+                (!filter.Remove(testData)).ToProperty();
+            });
+        }
+
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Remove_WithItemInCollection_ShouldReturnTrue()
+        {
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(100, 0.2);
+                filter.Add(testData);
+                return filter.Remove(testData).ToProperty();
+            });
+        }
+
+        [Property]
+        [Trait("Category", "Property")]
+        public Property Remove_WithItemInCollection_ShouldRemoveItemFromCollection()
+        {
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(100, 0.2);
+                filter.Add(testData);
+                filter.Remove(testData);
+                return (!filter.Remove(testData)).ToProperty();
+            });
         }
 
         [Fact]
@@ -79,13 +95,17 @@ namespace Maybe.Test.BloomFilter
             Assert.Equal(0d, filter.FillRatio);
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void FillRatio_WithOneItem_ShouldBeNumHashesDividedByBitArraySize()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property FillRatio_WithOneItem_ShouldBeNumHashesDividedByBitArraySize()
         {
-            var filter = new MyTestBloomFilter<int>(250, 3);
-            filter.Add(42);
-            Assert.Equal(3d / 250d, filter.FillRatio);
+            return Prop.ForAll(Arb.Default.Int32(), Arb.From(Gen.Choose(1, 10000)), Arb.From(Gen.Choose(1, 99)), (testData, bitArraySize, errorRate) =>
+            {
+                var realErrorRate = (int) (errorRate / 100d);
+                var filter = new MyTestBloomFilter<int>(bitArraySize, realErrorRate);
+                filter.Add(testData);
+                return (realErrorRate / bitArraySize == filter.FillRatio).ToProperty();
+            });
         }
 
         [Fact]
@@ -101,21 +121,27 @@ namespace Maybe.Test.BloomFilter
             Assert.True(filter.Contains(42));
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property AddAndCheck_WhenItemHasBeenAddedBefore_ShouldReturnTrue()
         {
-            var filter = new CountingBloomFilter<int>(50, 0.02);
-            filter.Add(42);
-            Assert.True(filter.AddAndCheck(42));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(50, 0.02);
+                filter.Add(testData);
+                (filter.AddAndCheck(testData)).ToProperty();
+            });
         }
 
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
+        [Property]
+        [Trait("Category", "Property")]
+        public Property AddAndCheck_WhenItemHasntBeenAddedBefore_ShouldReturnFalse()
         {
-            var filter = new CountingBloomFilter<int>(50, 0.02);
-            Assert.False(filter.AddAndCheck(42));
+            return Prop.ForAll(Arb.Default.Int32(), testData =>
+            {
+                var filter = new CountingBloomFilter<int>(50, 0.02);
+                (filter.AddAndCheck(testData)).ToProperty();
+            });
         }
 
         [Fact]
