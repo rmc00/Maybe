@@ -82,7 +82,8 @@ namespace Maybe.BloomFilter
         /// <param name="hashAction"></param>
         protected void DoHashAction(T item, Action<int> hashAction)
         {
-            var hashes = _hasher.GetHashes(item, NumberHashes, CollectionLength);
+            var bytes = item as byte[] ?? ByteConverter.ConvertToByteArray(item);
+            var hashes = _hasher.GetHashes(bytes, NumberHashes, CollectionLength);
             foreach (var hash in hashes)
             {
                 hashAction(hash);

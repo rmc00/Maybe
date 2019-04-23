@@ -141,8 +141,10 @@ namespace Maybe.CountMinSketch
 
         private int[] GetHashBuckets(T item, int hashCount, int max)
         {
+            var bytes = item as byte[] ?? ByteConverter.ConvertToByteArray(item);
+
             var result = new int[hashCount];
-            var hashes = _hasher.GetHashes(item, hashCount, max).ToList();
+            var hashes = _hasher.GetHashes(bytes, hashCount, max).ToList();
             for (var i = 0; i < hashCount; i++)
             {
                 result[i] = hashes[i];
