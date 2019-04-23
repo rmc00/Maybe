@@ -153,11 +153,11 @@ namespace Maybe.SkipList
         public IEnumerator<T> GetEnumerator()
         {
             var currentNode = _headNode.Next[0];
-            do
+            while (currentNode != null && currentNode.HasNextAtLevel(0))
             {
                 yield return currentNode.Value;
                 currentNode = currentNode.Next[0];
-            } while (currentNode != null && currentNode.HasNextAtLevel(0));
+            }
 
             if (currentNode != null)
             {

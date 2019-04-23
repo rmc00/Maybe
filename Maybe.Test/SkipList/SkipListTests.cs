@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Maybe.SkipList;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using Maybe.SkipList;
 using Xunit;
 
 namespace Maybe.Test.SkipList
@@ -123,6 +123,17 @@ namespace Maybe.Test.SkipList
             Assert.Equal(42, content[0]);
             Assert.Equal(33, content[1]);
             Assert.Equal(27, content[2]);
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void GetEnumerator_WhenListIsEmpty_ShouldReturnEmptyEnumerator()
+        {
+            var list = new SkipList<int>();
+            using (var enumerator = list.GetEnumerator())
+            {
+                Assert.False(enumerator.MoveNext());
+            }
         }
 
         private class MyComparer : IComparer<int>
